@@ -35,5 +35,6 @@ check() {
 
 package() {
   cd "$_pkgname"
+  desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "Settings.desktop"
   install -D -m755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
 }
