@@ -39,6 +39,7 @@ check() {
 package() {
   cd "$_pkgname"
 
+  mkdir -p -m 750 "$pkgdir/usr/share/polkit-1/rules.d"
   install -D -m 644 "rules/66-epitaph.rules.polkit" "$pkgdir/usr/share/polkit-1/rules.d/66-epitaph.rules"
   install -D -m 644 "rules/66-epitaph.rules.udev" "$pkgdir/usr/lib/udev/rules.d/66-epitaph.rules"
   install -D -m 755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
