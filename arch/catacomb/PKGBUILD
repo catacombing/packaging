@@ -1,8 +1,3 @@
-# TODO
-#  - https://wiki.archlinux.org/title/Power_management#ACPI_events
-#  - Seat role?
-#  - systemctl suspend?
-
 pkgname=catacomb-git
 _pkgname=catacomb
 pkgdesc="A Wayland Mobile Compositor"

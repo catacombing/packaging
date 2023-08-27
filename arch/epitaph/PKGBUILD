@@ -14,25 +14,32 @@ sha256sums=("SKIP")
 
 pkgver() {
   cd "$_pkgname"
+
   printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 prepare() {
   cd "$_pkgname"
+
   cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
 
 build() {
   cd "$_pkgname"
   CARGO_INCREMENTAL=0 cargo build --release --locked --offline
+
 }
 
 check() {
   cd "$_pkgname"
+
   CARGO_INCREMENTAL=0 cargo test --locked --offline
 }
 
 package() {
   cd "$_pkgname"
-  install -D -m755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
+
+  install -D -m 644 "rules/66-epitaph.rules.polkit" "$pkgdir/usr/share/polkit-1/rules.d/66-epitaph.rules"
+  install -D -m 644 "rules/66-epitaph.rules.udev" "$pkgdir/usr/lib/udev/rules.d/66-epitaph.rules"
+  install -D -m 755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
 }
