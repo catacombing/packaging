@@ -10,7 +10,7 @@ makedepends=("git" "rust" "cargo")
 source=("git+$url.git" "sysuser.conf")
 #source=("git+$url.git#tag=v$pkgver?signed" "sysuser.conf")
 #validpgpkeys=("4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4")  # Christian Dürr <contact@christianduerr.com>
-sha256sums=("SKIP" "a2e50e9888fd7089deecf0b8f9e0724079b7b3beb3ce65c5f87870dc1bf4ac98")
+sha256sums=("SKIP" "8bcbc0941d3a6e458a3b1eb2e8443dee7bdb5c7e040ebcc90d46cd22eb6108bb")
 
 pkgver() {
   cd "$_pkgname"
