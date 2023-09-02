@@ -7,32 +7,39 @@ arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/tzompantli"
 license=("GPL3")
 makedepends=("git" "rust" "cargo")
-source=("git+$url.git")
+source=("git+$url.git" "sysuser.conf")
 #source=("git+$url.git#tag=v$pkgver?signed")
 #validpgpkeys=("4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4")  # Christian Dürr <contact@christianduerr.com>
-sha256sums=("SKIP")
+sha256sums=("SKIP" "8bcbc0941d3a6e458a3b1eb2e8443dee7bdb5c7e040ebcc90d46cd22eb6108bb")
 
 pkgver() {
   cd "$_pkgname"
+
   printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 prepare() {
   cd "$_pkgname"
+
   cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
 
 build() {
   cd "$_pkgname"
+
   CARGO_INCREMENTAL=0 cargo build --release --locked --offline
 }
 
 check() {
   cd "$_pkgname"
+
   CARGO_INCREMENTAL=0 cargo test --locked --offline
 }
 
 package() {
-  cd "$_pkgname"
-  install -D -m755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
+  mkdir -p -m 750 "$pkgdir/usr/share/polkit-1/rules.d"
+  install -D -m 644 "$_pkgname/rules/66-tzompantli.rules.polkit" "$pkgdir/usr/share/polkit-1/rules.d/66-tzompantli.rules"
+  install -D -m 644 "sysuser.conf" "$pkgdir/usr/lib/sysusers.d/tzompantli.conf"
+
+  install -D -m755 "$_pkgname/target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
 }
