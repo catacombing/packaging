@@ -1,0 +1,48 @@
+pkgname=catacomb-alarm-git
+_pkgname=alarm
+pkgdesc="Alarm clock client"
+pkgver=r9.ec992b1
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://github.com/catacombing/alarm"
+license=("GPL3")
+makedepends=("git" "rust" "cargo" "gtk4")
+depends=("gtk4")
+source=("git+$url.git")
+#source=("git+$url.git#tag=v$pkgver?signed")
+#validpgpkeys=("")  # Christian Dürr <contact@christianduerr.com>
+sha256sums=("SKIP")
+
+pkgver() {
+  cd "$_pkgname"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  cd "$_pkgname"
+  cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+}
+
+build() {
+  cd "$_pkgname"
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline --manifest-path rezz/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline --manifest-path gtk/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline --manifest-path cli/Cargo.toml
+}
+
+check() {
+  cd "$_pkgname"
+  CARGO_INCREMENTAL=0 cargo test --locked --offline --manifest-path rezz/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo test --locked --offline --manifest-path gtk/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo test --locked --offline --manifest-path cli/Cargo.toml
+}
+
+package() {
+  cd "$_pkgname"
+  desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "Alarm.desktop"
+  install -D -m644 "rezz/org.catacombing.rezz.conf" "/usr/share/dbus-1/system.d/org.catacombing.rezz.conf"
+  install -D -m644 "rezz/rezz.service" "/usr/lib/systemd/system/rezz.service"
+  install -D -m755 "target/release/rezz" "$pkgdir/usr/bin/rezz"
+  install -D -m755 "target/release/alarm-gtk" "$pkgdir/usr/bin/alarm-gtk"
+  install -D -m755 "target/release/alarm-cli" "$pkgdir/usr/bin/alarm-cli"
+}
