@@ -39,9 +39,9 @@ check() {
 
 package() {
   cd "$_pkgname"
-  desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "Alarm.desktop"
-  install -D -m644 "rezz/org.catacombing.rezz.conf" "/usr/share/dbus-1/system.d/org.catacombing.rezz.conf"
-  install -D -m644 "rezz/rezz.service" "/usr/lib/systemd/system/rezz.service"
+  desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "gtk/Alarm.desktop"
+  install -D -m644 "rezz/org.catacombing.rezz.conf" "$pkgdir/usr/share/dbus-1/system.d/org.catacombing.rezz.conf"
+  install -D -m644 "rezz/rezz.service" "$pkgdir/usr/lib/systemd/system/rezz.service"
   install -D -m755 "target/release/rezz" "$pkgdir/usr/bin/rezz"
   install -D -m755 "target/release/alarm-gtk" "$pkgdir/usr/bin/alarm-gtk"
   install -D -m755 "target/release/alarm-cli" "$pkgdir/usr/bin/alarm-cli"
