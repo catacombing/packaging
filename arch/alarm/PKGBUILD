@@ -6,7 +6,7 @@ pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/alarm"
 license=("GPL3")
-makedepends=("git" "rust" "cargo" "gtk4")
+makedepends=("git" "rust" "cargo" "gtk4" "alsa-lib")
 depends=("gtk4")
 source=("git+$url.git")
 #source=("git+$url.git#tag=v$pkgver?signed")
