@@ -1,0 +1,10 @@
+# Ignore build output.
+**/*.pkg.tar.*
+
+# Ignore git info for each project.
+tzompantli/tzompantli
+settings/settings
+catacomb/catacomb
+epitaph/epitaph
+tremor/tremor
+alarm/alarm

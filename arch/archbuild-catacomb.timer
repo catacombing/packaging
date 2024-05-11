@@ -1,0 +1,8 @@
+[Unit]
+Description=Minutely Catacomb package DB update
+
+[Timer]
+OnCalendar=*:*:0
+
+[Install]
+WantedBy=timers.target

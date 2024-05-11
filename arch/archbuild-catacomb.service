@@ -1,0 +1,10 @@
+[Unit]
+Description=Automatically compile Catacomb packages
+
+[Service]
+Type=simple
+User=rock
+ExecStart=/home/rock/packaging/arch/update_db.sh /mnt/zfast/repo/arch/aarch64/catacomb.db.tar.gz /home/rock/packaging/arch
+
+[Install]
+WantedBy=multi-user.target
