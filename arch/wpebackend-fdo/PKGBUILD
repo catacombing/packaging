@@ -1,0 +1,61 @@
+pkgname=wpebackend-fdo-linear
+pkgver=1.14.2
+pkgrel=1
+pkgdesc="Freedesktop.org backend for WPE WebKit"
+url="https://wpewebkit.org"
+arch=(x86_64)
+license=(custom)
+provides=(wpebackend-fdo)
+conflicts=(wpebackend-fdo)
+depends=(
+  glib2
+  libegl
+  libepoxy
+  libwpe
+  wayland
+)
+makedepends=(
+  git
+  mesa
+  meson
+  wayland-protocols
+)
+_commit=f121a8e93736b099906b7848797f89c9b689892b  # tags/1.14.2^0
+source=(
+  "git+https://github.com/Igalia/WPEBackend-fdo#commit=$_commit"
+  "linear-modifiers.patch"
+)
+b2sums=(
+  'SKIP'
+  'd947364f8df586e67b06da35faae6cbc804a5601baa6a7630c92fe44d2b2d281336736e4a07b21827abaffb082d0bb53171bb9b6683e3f8c093986f886b1f56f'
+)
+validpgpkeys=('5AA3BC334FD7E3369E7C77B291C559DBE4C9123B') # Adrián Pérez de Castro <aperez@igalia.com>
+
+pkgver() {
+  cd WPEBackend-fdo
+  git describe --tags | sed 's/[^-]*-g/r&/;s/-/+/g'
+}
+
+prepare() {
+  cd WPEBackend-fdo
+  patch -Np1 -i "$srcdir"/linear-modifiers.patch
+}
+
+build() {
+  arch-meson WPEBackend-fdo build
+  meson compile -C build
+}
+
+check() {
+  meson test -C build --print-errorlogs
+}
+
+package() {
+  depends+=(libwpe-1.0.so libg{lib,object,io}-2.0.so)
+  provides+=(libWPEBackend-fdo-1.0.so)
+
+  meson install -C build --destdir "$pkgdir"
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 WPEBackend-fdo/COPYING
+}
+
+# vim:set sw=2 sts=-1 et:
