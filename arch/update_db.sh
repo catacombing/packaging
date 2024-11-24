@@ -2,13 +2,14 @@
 
 # Check for new updates and add them to the pacman DB.
 
-if [ $# -lt 2 ]; then
-    echo "USAGE: watch.sh <DB_FILE> <PKGS_DIR>"
+if [ $# -lt 3 ]; then
+    echo "USAGE: watch.sh <DB_FILE> <PKGS_DIR> <REMOTE>"
     exit 1
 fi
 
 db="$(realpath $1)"
 pkgs_dir="$(realpath $2)"
+remote="$3"
 
 # Revert changes to PKGBUILD versions.
 cd "$pkgs_dir"
@@ -51,3 +52,6 @@ for file in $(ls $pkgs_dir); do
 
     echo "Updated database"
 done
+
+# Update database at christianduerr.com.
+rsync -Phav --delete "$(dirname $db)" "$remote"
