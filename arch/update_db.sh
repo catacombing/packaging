@@ -30,7 +30,7 @@ for file in $(ls $pkgs_dir); do
 
     # Build package.
     cd "$pkg_dir"
-    makepkg -sCc --noconfirm
+    makepkg -sCc --sign --noconfirm
     exit_code=$?
 
     # Ignore if package didn't update.
@@ -43,17 +43,11 @@ for file in $(ls $pkgs_dir); do
     fi
 
     # Add package to database.
-    pkg=$(ls --sort=time *.pkg.tar.* | head -n 1)
+    pkg=$(ls --sort=time *.pkg.tar.xz | head -n 1)
+    sig=$(ls --sort=time *.sig | head -n 1)
     cp "$pkg" "$(dirname $db)/"
-    repo-add "$db" *.pkg.tar.*
-
-    # Delete old versions from repo.
-    for file in *.pkg.tar.*; do
-        if [ "$file" != "$pkg" ]; then
-    	echo "Removing $file from repo"
-            rm -f "$file"
-        fi
-    done
+    cp "$sig" "$(dirname $db)/"
+    repo-add -Rs "$db" "$pkg"
 
     echo "Updated database"
 done
