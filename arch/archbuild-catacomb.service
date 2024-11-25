@@ -4,7 +4,7 @@ Description=Automatically compile Catacomb packages
 [Service]
 Type=simple
 User=rock
-ExecStart=/home/rock/packaging/arch/update_db.sh /mnt/zfast/repo/arch/aarch64/catacomb.db.tar.gz /home/rock/packaging/arch christianduerr.com:/home/alarm/repo
+ExecStart=/home/rock/packaging/arch/update_db.sh /mnt/zfast/repo/arch/aarch64/catacomb.db.tar.gz /home/rock/packaging/arch christianduerr.com:/home/alarm/repo/catacomb
 
 [Install]
 WantedBy=multi-user.target
