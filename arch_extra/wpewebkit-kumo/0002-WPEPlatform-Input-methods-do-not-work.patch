@@ -1,0 +1,72 @@
+From a4052b199e60ce3731eb494d3dd7824e4e3a4da4 Mon Sep 17 00:00:00 2001
+From: UndeadLeech <contact@christianduerr.com>
+Date: Tue, 24 Sep 2024 06:05:06 -0700
+Subject: [PATCH] [WPEPlatform] Input methods do not work
+ https://bugs.webkit.org/show_bug.cgi?id=279930
+
+Reviewed by Carlos Garcia Campos.
+
+Implement ViewPlatform::synthesizeCompositionKeyPress(), which was
+missing implementation for WPE.
+
+* Source/WebKit/Shared/NativeWebKeyboardEvent.h:
+* Source/WebKit/Shared/wpe/NativeWebKeyboardEventWPE.cpp:
+(WebKit::NativeWebKeyboardEvent::NativeWebKeyboardEvent): Add helper
+constructor, needed by ::synthesizeCompositionKeyPress().
+* Source/WebKit/UIProcess/API/wpe/WPEWebViewPlatform.cpp:
+(WKWPE::ViewPlatform::synthesizeCompositionKeyPress): Implement.
+
+Canonical link: https://commits.webkit.org/284155@main
+---
+ Source/WebKit/Shared/NativeWebKeyboardEvent.h          | 1 +
+ Source/WebKit/Shared/wpe/NativeWebKeyboardEventWPE.cpp | 5 +++++
+ Source/WebKit/UIProcess/API/wpe/WPEWebViewPlatform.cpp | 4 ++--
+ 3 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/Source/WebKit/Shared/NativeWebKeyboardEvent.h b/Source/WebKit/Shared/NativeWebKeyboardEvent.h
+index 17cb42104f3f..c72c9733800b 100644
+--- a/Source/WebKit/Shared/NativeWebKeyboardEvent.h
++++ b/Source/WebKit/Shared/NativeWebKeyboardEvent.h
+@@ -83,6 +83,7 @@ public:
+     NativeWebKeyboardEvent(struct wpe_input_keyboard_event*, const String&, bool isAutoRepeat, HandledByInputMethod, std::optional<Vector<WebCore::CompositionUnderline>>&&, std::optional<EditingRange>&&);
+ #if PLATFORM(WPE) && ENABLE(WPE_PLATFORM)
+     NativeWebKeyboardEvent(WPEEvent*, const String&, bool isAutoRepeat);
++    NativeWebKeyboardEvent(const String&, std::optional<Vector<WebCore::CompositionUnderline>>&&, std::optional<EditingRange>&&);
+ #endif
+ #elif PLATFORM(WIN)
+     NativeWebKeyboardEvent(HWND, UINT message, WPARAM, LPARAM, Vector<MSG>&& pendingCharEvents);
+diff --git a/Source/WebKit/Shared/wpe/NativeWebKeyboardEventWPE.cpp b/Source/WebKit/Shared/wpe/NativeWebKeyboardEventWPE.cpp
+index e6cc87153a68..34d56bca5900 100644
+--- a/Source/WebKit/Shared/wpe/NativeWebKeyboardEventWPE.cpp
++++ b/Source/WebKit/Shared/wpe/NativeWebKeyboardEventWPE.cpp
+@@ -37,6 +37,11 @@ NativeWebKeyboardEvent::NativeWebKeyboardEvent(WPEEvent* event, const String& te
+ {
+ }
+ 
++NativeWebKeyboardEvent::NativeWebKeyboardEvent(const String& text, std::optional<Vector<WebCore::CompositionUnderline>>&& preeditUnderlines, std::optional<EditingRange>&& preeditSelectionRange)
++    : WebKeyboardEvent(WebEvent(WebEventType::KeyDown, { }, WallTime::now()), text, "Unidentified"_s, "Unidentified"_s, "U+0000"_s, 0, 0, true, WTFMove(preeditUnderlines), WTFMove(preeditSelectionRange), false, false)
++{
++}
++
+ } // namespace WebKit
+ 
+ #endif // ENABLE(WPE_PLATFORM)
+diff --git a/Source/WebKit/UIProcess/API/wpe/WPEWebViewPlatform.cpp b/Source/WebKit/UIProcess/API/wpe/WPEWebViewPlatform.cpp
+index 0bd611853347..5acde9eb15d1 100644
+--- a/Source/WebKit/UIProcess/API/wpe/WPEWebViewPlatform.cpp
++++ b/Source/WebKit/UIProcess/API/wpe/WPEWebViewPlatform.cpp
+@@ -435,9 +435,9 @@ void ViewPlatform::handleGesture(WPEEvent* event)
+     }
+ }
+ 
+-void ViewPlatform::synthesizeCompositionKeyPress(const String&, std::optional<Vector<WebCore::CompositionUnderline>>&&, std::optional<EditingRange>&&)
++void ViewPlatform::synthesizeCompositionKeyPress(const String& text, std::optional<Vector<WebCore::CompositionUnderline>>&& underlines, std::optional<EditingRange>&& selectionRange)
+ {
+-    // FIXME: implement.
++    page().handleKeyboardEvent(WebKit::NativeWebKeyboardEvent(text, WTFMove(underlines), WTFMove(selectionRange)));
+ }
+ 
+ void ViewPlatform::setCursor(const WebCore::Cursor& cursor)
+-- 
+2.47.0
+

@@ -1,0 +1,232 @@
+From cc0ed7b48a876119c28f8aa37c3e5db103445fa4 Mon Sep 17 00:00:00 2001
+From: Christian Duerr <contact@christianduerr.com>
+Date: Thu, 24 Oct 2024 01:56:31 +0200
+Subject: [PATCH 1/2] Add WPE context menu support
+ https://bugs.webkit.org/show_bug.cgi?id=272354
+
+Reviewed by NOBODY (OOPS!).
+
+This replaces the existing context menu stub implementation with a
+minimal version which emits the WebView's context menu signal.
+
+This also resolves a bug where all mouse input would break after
+right-clicking, since the stub implementation was waiting for the
+context menu to be opened before processing new mouse events.
+
+The `context-menu-dismissed` signal is removed from the WPE backend in a
+breaking change, since dismissal is handled by the consumer of the API.
+
+* Source/WebKit/Shared/API/glib/WebKitContextMenuItem.cpp:
+(webkit_context_menu_item_get_title):
+* Source/WebKit/SourcesWPE.txt:
+* Source/WebKit/UIProcess/API/glib/WebKitContextMenuItem.h.in:
+* Source/WebKit/UIProcess/API/glib/WebKitWebView.cpp:
+(webkit_web_view_class_init):
+* Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.cpp: Copied from Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.h.
+(WebKit::WebContextMenuProxyWPE::WebContextMenuProxyWPE):
+(WebKit::WebContextMenuProxyWPE::show):
+(WebKit::WebContextMenuProxyWPE::showContextMenuWithItems):
+* Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.h:
+---
+ .../Shared/API/glib/WebKitContextMenuItem.cpp | 25 ++++++++++
+ Source/WebKit/SourcesWPE.txt                  |  1 +
+ .../API/glib/WebKitContextMenuItem.h.in       |  3 ++
+ .../UIProcess/API/glib/WebKitWebView.cpp      | 21 +++++---
+ .../UIProcess/wpe/WebContextMenuProxyWPE.cpp  | 50 +++++++++++++++++++
+ .../UIProcess/wpe/WebContextMenuProxyWPE.h    | 13 ++---
+ 6 files changed, 99 insertions(+), 14 deletions(-)
+ create mode 100644 Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.cpp
+
+diff --git a/Source/WebKit/Shared/API/glib/WebKitContextMenuItem.cpp b/Source/WebKit/Shared/API/glib/WebKitContextMenuItem.cpp
+index 6f78bdd9e660..885fa087a57b 100644
+--- a/Source/WebKit/Shared/API/glib/WebKitContextMenuItem.cpp
++++ b/Source/WebKit/Shared/API/glib/WebKitContextMenuItem.cpp
+@@ -61,6 +61,7 @@ struct _WebKitContextMenuItemPrivate {
+ 
+     std::unique_ptr<WebContextMenuItemGlib> menuItem;
+     GRefPtr<WebKitContextMenu> subMenu;
++    CString title;
+ #endif // ENABLE(CONTEXT_MENUS)
+ };
+ 
+@@ -333,6 +334,30 @@ GAction* webkit_context_menu_item_get_gaction(WebKitContextMenuItem* item)
+ #endif // ENABLE(CONTEXT_MENUS)
+ }
+ 
++/**
++ * webkit_context_menu_item_get_title:
++ * @item: a #WebKitContextMenuItem
++ *
++ * Gets the title associated to @item.
++ *
++ * Returns: (transfer none): the title associated to the #WebKitContextMenuItem,
++ *    or %NULL if @item is a separator.
++ *
++ * Since: 2.48
++ */
++const char* webkit_context_menu_item_get_title(WebKitContextMenuItem* item)
++{
++    g_return_val_if_fail(WEBKIT_IS_CONTEXT_MENU_ITEM(item), nullptr);
++
++#if ENABLE(CONTEXT_MENUS)
++    item->priv->title = item->priv->menuItem->title().utf8();
++    return item->priv->title.data();
++#else
++    g_assert_not_reached();
++    return nullptr;
++#endif // ENABLE(CONTEXT_MENUS)
++}
++
+ /**
+  * webkit_context_menu_item_get_stock_action:
+  * @item: a #WebKitContextMenuItem
+diff --git a/Source/WebKit/SourcesWPE.txt b/Source/WebKit/SourcesWPE.txt
+index a1665d4ba02b..c2f60d4faa44 100644
+--- a/Source/WebKit/SourcesWPE.txt
++++ b/Source/WebKit/SourcesWPE.txt
+@@ -259,6 +259,7 @@ UIProcess/wpe/AcceleratedBackingStoreDMABuf.cpp
+ UIProcess/wpe/ScreenManagerWPE.cpp
+ UIProcess/wpe/WebPageProxyWPE.cpp
+ UIProcess/wpe/WebPreferencesWPE.cpp
++UIProcess/wpe/WebContextMenuProxyWPE.cpp
+ 
+ WebProcess/GPU/graphics/gbm/RemoteGraphicsContextGLProxyGBM.cpp
+ 
+diff --git a/Source/WebKit/UIProcess/API/glib/WebKitContextMenuItem.h.in b/Source/WebKit/UIProcess/API/glib/WebKitContextMenuItem.h.in
+index afa7ce532d90..4a48fc717797 100644
+--- a/Source/WebKit/UIProcess/API/glib/WebKitContextMenuItem.h.in
++++ b/Source/WebKit/UIProcess/API/glib/WebKitContextMenuItem.h.in
+@@ -86,6 +86,9 @@ webkit_context_menu_item_get_action                       (WebKitContextMenuItem
+ WEBKIT_API GAction *
+ webkit_context_menu_item_get_gaction                      (WebKitContextMenuItem  *item);
+ 
++WEBKIT_API const gchar *
++webkit_context_menu_item_get_title                        (WebKitContextMenuItem  *item);
++
+ WEBKIT_API WebKitContextMenuAction
+ webkit_context_menu_item_get_stock_action                 (WebKitContextMenuItem  *item);
+ 
+diff --git a/Source/WebKit/UIProcess/API/glib/WebKitWebView.cpp b/Source/WebKit/UIProcess/API/glib/WebKitWebView.cpp
+index 3fb1b02cdb87..d58a68765da1 100644
+--- a/Source/WebKit/UIProcess/API/glib/WebKitWebView.cpp
++++ b/Source/WebKit/UIProcess/API/glib/WebKitWebView.cpp
+@@ -2256,15 +2256,20 @@ static void webkit_web_view_class_init(WebKitWebViewClass* webViewClass)
+      *
+      * Emitted after #WebKitWebView::context-menu signal, if the context menu is shown,
+      * to notify that the context menu is dismissed.
++     *
++     * Deprecated: 2.48, WPE WebKit does not emit this signal.
+      */
+-    signals[CONTEXT_MENU_DISMISSED] =
+-        g_signal_new("context-menu-dismissed",
+-                     G_TYPE_FROM_CLASS(webViewClass),
+-                     G_SIGNAL_RUN_LAST,
+-                     G_STRUCT_OFFSET(WebKitWebViewClass, context_menu_dismissed),
+-                     0, 0,
+-                     g_cclosure_marshal_VOID__VOID,
+-                     G_TYPE_NONE, 0);
++    signals[CONTEXT_MENU_DISMISSED] = g_signal_new("context-menu-dismissed",
++        G_TYPE_FROM_CLASS(webViewClass),
++#if PLATFORM(GTK)
++        G_SIGNAL_RUN_LAST,
++#else
++        static_cast<GSignalFlags>(G_SIGNAL_RUN_LAST | G_SIGNAL_DEPRECATED),
++#endif // PLATFORM(GTK)
++        G_STRUCT_OFFSET(WebKitWebViewClass, context_menu_dismissed),
++        0, 0,
++        g_cclosure_marshal_VOID__VOID,
++        G_TYPE_NONE, 0);
+ 
+     /**
+      * WebKitWebView::submit-form:
+diff --git a/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.cpp b/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.cpp
+new file mode 100644
+index 000000000000..895fcb77eb7e
+--- /dev/null
++++ b/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.cpp
+@@ -0,0 +1,50 @@
++/*
++ * Copyright (C) 2024 Christian Duerr
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY APPLE INC. AND ITS CONTRIBUTORS AS IS''
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL APPLE INC. OR ITS CONTRIBUTORS
++ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
++ * THE POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#include "config.h"
++#include "WebContextMenuProxyWPE.h"
++
++#if ENABLE(CONTEXT_MENUS)
++
++namespace WebKit {
++using namespace WebCore;
++
++WebContextMenuProxyWPE::WebContextMenuProxyWPE(WebPageProxy& page, ContextMenuContextData&& context, const UserData& userData)
++    : WebContextMenuProxy(page, WTFMove(context), userData)
++{
++}
++
++void WebContextMenuProxyWPE::show()
++{
++    WebContextMenuProxy::show();
++}
++
++void WebContextMenuProxyWPE::showContextMenuWithItems(Vector<Ref<WebContextMenuItem>>&& items)
++{
++    notImplemented();
++}
++
++} // namespace WebKit
++#endif // ENABLE(CONTEXT_MENUS)
+diff --git a/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.h b/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.h
+index 5243d0ccf23c..c51d60a86d22 100644
+--- a/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.h
++++ b/Source/WebKit/UIProcess/wpe/WebContextMenuProxyWPE.h
+@@ -25,6 +25,8 @@
+ 
+ #pragma once
+ 
++#if ENABLE(CONTEXT_MENUS)
++
+ #include "WebContextMenuProxy.h"
+ 
+ namespace WebKit {
+@@ -36,13 +38,12 @@ public:
+         return adoptRef(*new WebContextMenuProxyWPE(page, WTFMove(context), userData));
+     }
+ 
+-    void showContextMenuWithItems(Vector<Ref<WebContextMenuItem>>&&) final { }
+-    void show() final { };
+-
+ private:
+-    WebContextMenuProxyWPE(WebPageProxy& page, ContextMenuContextData&& context, const UserData& userData)
+-        : WebContextMenuProxy(page, WTFMove(context), userData)
+-    { }
++    WebContextMenuProxyWPE(WebPageProxy&, ContextMenuContextData&&, const UserData&);
++    void showContextMenuWithItems(Vector<Ref<WebContextMenuItem>>&&) override;
++    void show() override;
+ };
+ 
+ } // namespace WebKit
++
++#endif // ENABLE(CONTEXT_MENUS)
+-- 
+2.47.0
+
