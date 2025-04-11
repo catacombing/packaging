@@ -6,12 +6,12 @@ Mobile DE.
 ## Archlinux
 
 Packages for ALARM are automatically updated and published to
-<https://christianduerr.com/catacomb/aarch64/>. You can use this repository by
+<https://catacombing.org/catacomb/aarch64/>. You can use this repository by
 adding the following lines to your `/etc/pacman.conf`:
 
 ```text
 [catacomb]
-Server = https://christianduerr.com/$repo/$arch/
+Server = https://catacombing.org/$repo/$arch/
 ```
 
 To be able to validate the repository's signatures, you'll also have to add and
