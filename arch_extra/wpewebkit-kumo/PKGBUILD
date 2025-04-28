@@ -3,11 +3,11 @@ pkgname=(
   wpewebkit-kumo
   wpewebkit-kumo-docs
 )
-pkgver=2.46.0
+pkgver=2.49.1
 pkgrel=1
 pkgdesc="Embeddable web content engine"
 url="https://wpewebkit.org"
-arch=(aarch64)
+arch=(x86_64 aarch64)
 license=(
   # :sort ui /\v^\s*['"]?/
   'AFL-2.0 OR GPL-2.0-or-later'
@@ -40,6 +40,7 @@ depends=(
   atk
   bubblewrap
   cairo
+  expat
   fontconfig
   freetype2
   gcc-libs
@@ -78,12 +79,14 @@ depends=(
   zlib
 )
 makedepends=(
+  clang
   cmake
   gi-docgen
   glib2-devel
   gobject-introspection
   gperf
   gst-plugins-bad
+  lld
   ninja
   python
   ruby
@@ -93,43 +96,39 @@ makedepends=(
   wayland-protocols
 )
 source=(
-  $url/releases/wpewebkit-$pkgver.tar.xz
-  0001-Add-WPE-context-menu-support.patch
-  0002-WPEPlatform-Input-methods-do-not-work.patch
-  0003-Add-touch-context-menu-support.patch
+  "wpewebkit-$pkgver::git+https://github.com/chrisduerr/WebKit"
 )
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
-
-prepare() {
-  cd wpewebkit-$pkgver
-  for patch in "$srcdir"/*.patch; do
-    patch -Np1 -i "$patch"
-  done
-}
+sha256sums=('SKIP')
 
 build() {
   local cmake_options=(
-    -DPORT=WPE
-    -DCMAKE_BUILD_TYPE=Release
-    -DCMAKE_INSTALL_PREFIX=/usr
-    -DCMAKE_INSTALL_LIBDIR=lib
-    -DCMAKE_INSTALL_LIBEXECDIR=lib
-    -DCMAKE_SKIP_RPATH=ON
-    -DUSE_LIBBACKTRACE=OFF
-    -DENABLE_DOCUMENTATION=ON
-    -DENABLE_MINIBROWSER=ON
+    -D PORT=WPE
+    -D CMAKE_BUILD_TYPE=Release
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CMAKE_INSTALL_LIBDIR=lib
+    -D CMAKE_INSTALL_LIBEXECDIR=lib
+    -D CMAKE_SKIP_RPATH=ON
+    -D USE_LIBBACKTRACE=OFF
+    -D ENABLE_DOCUMENTATION=ON
+    -D ENABLE_MINIBROWSER=OFF
+    -D ENABLE_WPE_PLATFORM=ON
+    -D ENABLE_SPEECH_SYNTHESIS=OFF
   )
+
+  # Upstream prefers Clang
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/webkitgtk-6.0/-/issues/4
+  export CC=clang CXX=clang++
+  LDFLAGS+=" -fuse-ld=lld"
+
+  # Skia uses malloc_usable_size
+  CFLAGS="${CFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
+  CXXFLAGS="${CXXFLAGS/_FORTIFY_SOURCE=3/_FORTIFY_SOURCE=2}"
 
   # JITted code crashes when CET is used
   CFLAGS+=' -fcf-protection=none'
   CXXFLAGS+=' -fcf-protection=none'
 
-  # Produce minimal debug info: 4.3 GB of debug data makes the
-  # build too slow and is too much to package for debuginfod
-  CFLAGS+=' -g1'
-  CXXFLAGS+=' -g1'
-
-  cmake -S wpewebkit-2.46.0 -B build -G Ninja "${cmake_options[@]}"
+  cmake -S wpewebkit-$pkgver -B build -G Ninja "${cmake_options[@]}"
   cmake --build build
 }
 
@@ -155,7 +154,7 @@ package_wpewebkit-kumo() {
   mkdir -p doc/usr/share
   mv {"$pkgdir",doc}/usr/share/doc
 
-  cd wpewebkit-2.46.0
+  cd wpewebkit-$pkgver
   find Source -name 'COPYING*' -or -name 'LICENSE*' -print0 | sort -z |
     while IFS= read -d $'\0' -r _f; do
       echo "### $_f ###"
