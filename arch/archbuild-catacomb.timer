@@ -2,7 +2,7 @@
 Description=15-Minutely Catacomb package DB update
 
 [Timer]
-OnCalendar=*:*:0/15
+OnCalendar=*:0/15:00
 
 [Install]
 WantedBy=timers.target
