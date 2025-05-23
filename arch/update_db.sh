@@ -30,8 +30,14 @@ for file in $(ls $pkgs_dir); do
     echo "Checking $pkg_dir…"
 
     # Build package.
+    #
+    # We avoid `-C` for WebKit because building it without cache takes forever.
     cd "$pkg_dir"
-    makepkg -sCc --sign --noconfirm
+    if [ "$file" == "wpewebkit-kumo" ]; then
+        makepkg -sc --sign --noconfirm
+    else
+        makepkg -sCc --sign --noconfirm
+    fi
     exit_code=$?
 
     # Ignore if package didn't update.
