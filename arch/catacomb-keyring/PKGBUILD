@@ -1,0 +1,30 @@
+pkgname=catacomb-keyring
+pkgdesc="Catacomb GPG keyring"
+pkgver=1
+pkgrel=1
+arch=("any")
+url="https://github.com/catacombing/packaging"
+license=("GPL3")
+source=(catacomb.gpg catacomb-trusted catacomb-revoked)
+sha256sums=(
+    "7b7c42a1eb13bbd2c99837beaa2867fbe7dd1b5e765d5ef6dac7fd214e02923f"
+    "08d20496b2bd866028846a686912247e7032c866b8c1caf80f464920d04c92d9"
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+)
+
+package() {
+    install -d $pkgdir/usr/share/pacman/keyrings
+    install -Dm644 catacomb{.gpg,-trusted,-revoked} $pkgdir/usr/share/pacman/keyrings/
+}
+
+post_upgrade() {
+    if usr/bin/pacman-key -l >/dev/null 2>&1; then
+        usr/bin/pacman-key --populate catacomb
+    fi
+}
+
+post_install() {
+    if [ -x usr/bin/pacman-key ]; then
+        post_upgrade
+    fi
+}
