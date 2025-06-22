@@ -21,3 +21,6 @@ trust the build system's PGP key:
 pacman-key --recv-keys 733163AA31950B7F4BE7EC4082CE6C29C7797E04
 pacman-key --lsign-key 733163AA31950B7F4BE7EC4082CE6C29C7797E04
 ```
+
+If you want to try Catacomb on a PinePhone or PinePhone Pro, you can download a
+prebuilt image from https://catacombing.org.
