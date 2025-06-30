@@ -1,41 +1,37 @@
-pkgname=catacomb-git
-_pkgname=catacomb
+pkgname=catacomb
 pkgdesc="A Wayland Mobile Compositor"
-pkgver=r372.0631ab4
+pkgver=1.0.0
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
 makedepends=("git" "rust" "cargo" "libxkbcommon" "libinput" "seatd" "wayland" "mesa")
 depends=("libxkbcommon" "libinput" "seatd")
-source=("git+$url.git")
-#source=("git+$url.git#tag=v$pkgver?signed")
-#validpgpkeys=("4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4")  # Christian Dürr <contact@christianduerr.com>
-sha256sums=("SKIP")
-
-pkgver() {
-  cd "$_pkgname"
-  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+source=("git+$url.git#tag=v$pkgver?signed")
+validpgpkeys=(
+    "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
+)
+sha256sums=("0e52cc7297998f1a91a59efe42d2f80d942784993695388bae8b90a1860c07c9")
+replaces=("catacomb-git")
 
 prepare() {
-  cd "$_pkgname"
+  cd "$pkgname"
   cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
 
 build() {
-  cd "$_pkgname"
+  cd "$pkgname"
   CARGO_INCREMENTAL=0 cargo build --release --locked --offline
 }
 
 check() {
-  cd "$_pkgname"
+  cd "$pkgname"
   CARGO_INCREMENTAL=0 cargo test --locked --offline
 }
 
 package() {
-  cd "$_pkgname"
-  install -D -m755 {target/release/$_pkgname,session/$_pkgname-session} -t $pkgdir/usr/bin/
-  install -D -m644 session/$_pkgname{.service,-shutdown.target} -t $pkgdir/usr/lib/systemd/user/
-  install -D -m644 session/$_pkgname.desktop -t $pkgdir/usr/share/wayland-sessions/
+  cd "$pkgname"
+  install -D -m755 {target/release/$pkgname,session/$pkgname-session} -t $pkgdir/usr/bin/
+  install -D -m644 session/$pkgname{.service,-shutdown.target} -t $pkgdir/usr/lib/systemd/user/
+  install -D -m644 session/$pkgname.desktop -t $pkgdir/usr/share/wayland-sessions/
 }

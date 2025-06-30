@@ -1,22 +1,23 @@
-pkgname=catacomb-meta-git
-_pkgname=catacomb-meta
+pkgname=catacomb-meta
 pkgdesc="Catacomb DE meta package"
-pkgver=1
-pkgrel=2
+pkgver=1.0.0
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
 makedepends=()
-depends=("catacomb-git" "epitaph-git" "squeekboard" "swayidle" "tinydm" "tremor-git" "tzompantli-git")
+depends=("catacomb" "epitaph" "squeekboard" "swayidle" "tinydm" "tremor" "tzompantli")
 backup=("etc/catacomb/initrc")
-source=("git+$url.git" $_pkgname.install)
-#source=("git+$url.git#tag=v$pkgver?signed")
-#validpgpkeys=("4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4")  # Christian Dürr <contact@christianduerr.com>
+source=("git+$url.git#tag=v$pkgver?signed" $pkgname.install)
+validpgpkeys=(
+    "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
+)
 sha256sums=(
-    "SKIP"
+    "0e52cc7297998f1a91a59efe42d2f80d942784993695388bae8b90a1860c07c9"
     "8d24af33590efe9c2832c9d1bed025866a034063efc27ed58217e1084ab247aa"
 )
-install=$_pkgname.install
+install=$pkgname.install
+replaces=("catacomb-meta-git")
 
 package() {
   cd "catacomb"
