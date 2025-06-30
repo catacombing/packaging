@@ -2,7 +2,7 @@ pkgname=catacomb-meta-git
 _pkgname=catacomb-meta
 pkgdesc="Catacomb DE meta package"
 pkgver=1
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
@@ -14,7 +14,7 @@ source=("git+$url.git" $_pkgname.install)
 #validpgpkeys=("4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4")  # Christian Dürr <contact@christianduerr.com>
 sha256sums=(
     "SKIP"
-    "8f18de6c0a75b3096dc029bfcd5f7fcf167e4a88879d3364358e806d8e2ffbcb"
+    "8d24af33590efe9c2832c9d1bed025866a034063efc27ed58217e1084ab247aa"
 )
 install=$_pkgname.install
 
