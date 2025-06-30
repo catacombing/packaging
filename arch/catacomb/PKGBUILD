@@ -1,7 +1,7 @@
 pkgname=catacomb-git
 _pkgname=catacomb
 pkgdesc="A Wayland Mobile Compositor"
-pkgver=r256.a75303f
+pkgver=r372.0631ab4
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
@@ -35,5 +35,7 @@ check() {
 
 package() {
   cd "$_pkgname"
-  install -D -m755 "target/release/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
+  install -D -m755 {target/release/$_pkgname,session/$_pkgname-session} -t $pkgdir/usr/bin/
+  install -D -m644 session/$_pkgname{.service,-shutdown.target} -t $pkgdir/usr/lib/systemd/user/
+  install -D -m644 session/$_pkgname.desktop -t $pkgdir/usr/share/wayland-sessions/
 }

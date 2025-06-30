@@ -1,0 +1,17 @@
+post_install() {
+    # Ensure Squeekboard pops up on input focus.
+    gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
+
+    # Enable TinyDM for automatic login and Catacomb start.
+    systemctl enable tinydm
+    if ! [ -L /var/lib/tinydm/default-session.desktop ]; then
+      if [ -f "/usr/share/wayland-sessions/catacomb.desktop" ]; then
+        tinydm-set-session -s "/usr/share/wayland-sessions/catacomb.desktop"
+      fi
+    fi
+}
+
+post_remove() {
+  tinydm-unset-session "/usr/share/wayland-sessions/catacomb.desktop"
+  systemctl disable tinydm
+}

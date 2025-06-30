@@ -1,0 +1,24 @@
+pkgname=catacomb-meta-git
+_pkgname=catacomb-meta
+pkgdesc="Catacomb DE meta package"
+pkgver=1
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://github.com/catacombing/catacomb"
+license=("GPL3")
+makedepends=()
+depends=("catacomb-git" "epitaph-git" "squeekboard" "swayidle" "tinydm" "tremor-git" "tzompantli-git")
+backup=("etc/catacomb/initrc")
+source=("git+$url.git" $_pkgname.install)
+#source=("git+$url.git#tag=v$pkgver?signed")
+#validpgpkeys=("4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4")  # Christian Dürr <contact@christianduerr.com>
+sha256sums=(
+    "SKIP"
+    "8f18de6c0a75b3096dc029bfcd5f7fcf167e4a88879d3364358e806d8e2ffbcb"
+)
+install=$_pkgname.install
+
+package() {
+  cd "catacomb"
+  install -Dm644 "initrc" "$pkgdir/etc/catacomb/initrc"
+}
