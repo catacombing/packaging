@@ -1,7 +1,7 @@
 pkgname=epitaph
 pkgdesc="A Wayland mobile panel"
 pkgver=1.0.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/epitaph"
 license=("GPL3")
@@ -14,6 +14,7 @@ sha256sums=(
     "a7ba751a6857ff4861bb602902205b50484c69d08d5318071f2e0ef723f15b5a"
     "8bcbc0941d3a6e458a3b1eb2e8443dee7bdb5c7e040ebcc90d46cd22eb6108bb"
 )
+replaces=("epitaph-git")
 
 prepare() {
   cd "$pkgname"
