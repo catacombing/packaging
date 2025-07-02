@@ -14,7 +14,7 @@ validpgpkeys=(
 )
 sha256sums=(
     "0e52cc7297998f1a91a59efe42d2f80d942784993695388bae8b90a1860c07c9"
-    "fe49241eac38dba97fda12d8000ab3f784d70ac65964921fc910506cd029dcd9"
+    "3b9c6971718731d3ee4cab7acbfc475b4647795d3446f30acd270f4497173b5a"
 )
 install=$pkgname.install
 replaces=("catacomb-meta-git")
