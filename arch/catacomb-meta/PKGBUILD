@@ -1,7 +1,7 @@
 pkgname=catacomb-meta
 pkgdesc="Catacomb DE meta package"
 pkgver=1.0.1
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
@@ -21,5 +21,5 @@ replaces=("catacomb-meta-git")
 
 package() {
   cd "catacomb"
-  install -Dm744 "initrc" "$pkgdir/etc/catacomb/initrc"
+  install -Dm755 "initrc" "$pkgdir/etc/catacomb/initrc"
 }
