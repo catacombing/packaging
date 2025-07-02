@@ -1,6 +1,9 @@
 post_install() {
     # Ensure Squeekboard pops up on input focus.
-    gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
+    if id alarm > /dev/null 2>&1; then
+        sudo -u alarm gsettings \
+            set org.gnome.desktop.a11y.applications screen-keyboard-enabled true
+    fi
 
     # Enable TinyDM for automatic login and Catacomb start.
     systemctl enable tinydm

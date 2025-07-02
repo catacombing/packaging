@@ -1,7 +1,7 @@
 pkgname=catacomb-meta
 pkgdesc="Catacomb DE meta package"
 pkgver=1.0.0
-pkgrel=2
+pkgrel=3
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
