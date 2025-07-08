@@ -1,0 +1,39 @@
+pkgname=pinax
+pkgdesc="Wayland mobile notepad"
+pkgver=0.2.0
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://github.com/catacombing/pinax"
+license=("GPL3")
+makedepends=("git" "rust" "cargo")
+source=("git+$url.git#tag=v$pkgver?signed")
+validpgpkeys=(
+    "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
+)
+sha256sums=(
+    "24ec80e436437a16acd7e365d5fc29e219353ec3723dabe8d84eac92ec62620e"
+)
+
+prepare() {
+  cd "$pkgname"
+
+  cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+}
+
+build() {
+  cd "$pkgname"
+
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline
+}
+
+check() {
+  cd "$pkgname"
+
+  CARGO_INCREMENTAL=0 cargo test --locked --offline
+}
+
+package() {
+  cd "$pkgname"
+  desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "pinax.desktop"
+  install -D -m755 "$pkgname/target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
+}
