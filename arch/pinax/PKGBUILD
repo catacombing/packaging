@@ -35,5 +35,5 @@ check() {
 package() {
   cd "$pkgname"
   desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "pinax.desktop"
-  install -D -m755 "$pkgname/target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
+  install -D -m755 "./target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
 }
