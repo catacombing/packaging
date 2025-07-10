@@ -3,10 +3,10 @@ pkgname=(
   wpewebkit-kumo
   wpewebkit-kumo-docs
 )
-pkgver=2.49.1
+pkgver=2.49.3
 pkgrel=1
 pkgdesc="Embeddable web content engine"
-url="https://wpewebkit.org"
+url="https://github.com/chrisduerr/webkit"
 arch=(x86_64 aarch64)
 license=(
   # :sort ui /\v^\s*['"]?/
@@ -96,9 +96,12 @@ makedepends=(
   wayland-protocols
 )
 source=(
-  "wpewebkit-$pkgver::git+https://github.com/chrisduerr/WebKit"
+  "wpewebkit-$pkgver::git+$url.git#tag=v$pkgver?signed"
 )
-sha256sums=('SKIP')
+validpgpkeys=(
+    "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
+)
+sha256sums=("55126aaad0e5ba323470c948c2231584e9850c3fa2202f8471580e6b780f39f3")
 
 build() {
   local cmake_options=(
