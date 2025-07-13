@@ -1,7 +1,7 @@
 pkgname=kumo
 pkgdesc="A Wayland Mobile Browser"
 pkgver=1.4.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/kumo"
 license=("GPL3")
