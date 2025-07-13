@@ -1,6 +1,6 @@
 pkgname=pinax
 pkgdesc="Wayland mobile notepad"
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/pinax"
@@ -11,7 +11,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "bb56cf68d6ae32d5b2b4e6dc10dc569d64b5699b1ba9c1403c8e748fda59958b"
+    "82149f25a9cce30138c46ef372f6e0c609b27a6caa34a1c9ae948481bc200145"
 )
 
 prepare() {
