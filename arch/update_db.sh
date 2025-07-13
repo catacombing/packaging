@@ -7,8 +7,8 @@ if [ $# -lt 3 ]; then
     exit 1
 fi
 
-db="$(realpath $1)"
-pkgs_dir="$(realpath $2)"
+db="$(realpath "$1")"
+pkgs_dir="$(realpath "$2")"
 remote="$3"
 
 # Revert changes to PKGBUILD versions.
@@ -28,6 +28,10 @@ for file in $(ls $pkgs_dir); do
     fi
 
     echo "Checking $pkg_dir…"
+
+    # Store previous packages and signatures.
+    old_pkgs=(./*.pkg.tar.xz)
+    old_sigs=(./*.sig)
 
     # Build package.
     #
@@ -49,15 +53,19 @@ for file in $(ls $pkgs_dir); do
         exit 2
     fi
 
-    # Add package to database.
-    pkg=$(ls --sort=time *.pkg.tar.xz | head -n 1)
-    sig=$(ls --sort=time *.sig | head -n 1)
-    cp "$pkg" "$(dirname $db)/"
-    cp "$sig" "$(dirname $db)/"
-    repo-add -Rs "$db" "$pkg"
+    # Remove old packages and signatures.
+    rm "${old_pkgs[@]}"
+    rm "${old_sigs[@]}"
+
+    # Add package(s) and signatures to database.
+    for pkg in ./*.pkg.tar.xz; do
+        cp "$pkg" "$(dirname "$db")/"
+        repo-add -Rs "$db" "$pkg"
+    done
+    cp ./*.sig "$(dirname "$db")/"
 
     echo "Updated database"
 done
 
 # Update database at christianduerr.com.
-rsync -Phav --delete "$(dirname $db)" "$remote"
+rsync -Phav --delete "$(dirname "$db")" "$remote"
