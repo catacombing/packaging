@@ -1,7 +1,7 @@
 pkgname=pinax
 pkgdesc="Wayland mobile notepad"
 pkgver=1.1.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/pinax"
 license=("GPL3")
@@ -36,4 +36,5 @@ package() {
   cd "$pkgname"
   desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "pinax.desktop"
   install -D -m755 "./target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
+  install -D -m644 "logo.svg" "$pkgdir/usr/share/pixmaps/Pinax.svg"
 }
