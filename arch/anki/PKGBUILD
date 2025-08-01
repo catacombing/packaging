@@ -6,12 +6,12 @@
 # Contributor: Michael 'manveru' Fellinger <m.fellinger@gmail.com>
 # Contributor: Dave Pretty <david dot pretty at gmail dot com>
 
-# anki -> git rev-parse --short=8 $pkgver
+# anki -> git rev-parse --short=8 $pkgver^{}
 # ftl -> git submodule
 declare -gA _tags=(
- [ftl_core]="0fe0162f4a18e8ef2fbac1d9a33af8e38cf7260e"
- [ftl_desktop]="17216b03db7249600542e388bd4ea124478400e5"
- [anki]="d5a7a0d1"
+ [ftl_core]="939298f7c461407951988f362b1a08b451336a1e"
+ [ftl_desktop]="bc2da83c77749d96f3df8144f00c87d68dd2187a"
+ [anki]="e511d63b"
 )
 
 declare -gA _caches=(
@@ -20,7 +20,7 @@ declare -gA _caches=(
 )
 
 pkgname=anki
-pkgver=25.02.5
+pkgver=25.07.4
 pkgrel=1
 pkgdesc="Helps you remember facts (like words/phrases in a foreign language) efficiently"
 url="https://apps.ankiweb.net/"
@@ -61,6 +61,7 @@ makedepends=(
     'nodejs>=20'
     'yarn'
     'mold'
+    'uv'
 )
 optdepends=(
     'lame: record sound'
@@ -79,11 +80,11 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/ankitects/anki/archive/refs
 )
 
 
-sha256sums=(4cd7d54dddd42466af82724505ad5ee436d3fcdcaff3375116cbbba639de502b
-            da57df3665ee094aa7d3566cd45a126f95b6cffef662a4c6f1959ea9e5b3f135
-            041684b0e23d041d4f7a0c21785371e3344c6b67824b1683318e3e70f08523bc
+sha256sums=(1eb7247fbeb4ec9a88d6b8375c67a73a00f001675869f3a4871cbd177db4688a
+            4bfa48821716fa6b8c31b03a93f263f96dae82f664c54430456ef23f3ff2b993
+            e81f423f3fbe28bd526d47f7e1b386da26f3f6e00194c3085696180e48915cce
             cc546f4e5af642af89f82be0375800c2721dd904c0a212cf46f6459495b75bff
-            9858fefa254812980d252b29fc6f32bd19bb83ee7e5a96d72c707626ed5193a7
+            bda56f774a676c894032086b124aeb4d61f1c28acb1868d117e3ed6b77780170
             198bc2ec14439e3ba41a03c4823f07df4b0c559c1dcbdaf678416ed12a720c2e
             2506cf9d5b0c47a2c519ec4bb0ef87e7921dca8db5cae39b0dae265d01e253b3
 )
@@ -96,6 +97,7 @@ prepare() {
     patch -p1 < "$srcdir/strip-formatter-deps.patch"
     patch -p1 < "$srcdir/strip-type-checking-deps.patch"
     patch -p1 < "$srcdir/strip-python-pip-system-certs.patch"
+
     sed -i 's/opt-level = 1$/opt-level= 3/' Cargo.toml	# optimize more
     sed -i 's/channel = "[0-9\.]*"$/channel = "stable"/' rust-toolchain.toml # use most recent stable rust toolchain
     # Build process wants .git/HEAD to be present. Workaround to be able to use tarballs
@@ -143,6 +145,7 @@ build() {
     export PROTOC_BINARY=$(which protoc)
     export NODE_BINARY=$(which node)
     export YARN_BINARY=$(which yarn)
+    export UV_BINARY=$(which uv)
 
     export CARGO_HOME="$srcdir/${_caches[cargo]}"    # do not litter in ~
     export RELEASE=2	        # anki-internal variable for optimization
@@ -163,6 +166,11 @@ package() {
     	python -m installer --destdir="$pkgdir" $file
     done
 
-    install -Dm644 qt/bundle/lin/anki.desktop "$pkgdir"/usr/share/applications/anki.desktop
-    install -Dm644 qt/bundle/lin/anki.png "$pkgdir"/usr/share/pixmaps/anki.png
+    cd qt/launcher/lin
+    install -Dm644 anki.desktop "$pkgdir"/usr/share/applications/anki.desktop
+    install -Dm644 anki.png "$pkgdir"/usr/share/pixmaps/anki.png
+    install -Dm644 anki.xpm "$pkgdir"/usr/share/pixmaps/anki.xpm
+    install -Dm644 anki.1 "$pkgdir"/usr/man/man1/anki.1
+    install -Dm644 anki.xml "$pkgdir/usr/share/mime/application/anki.xml"
+
 }
