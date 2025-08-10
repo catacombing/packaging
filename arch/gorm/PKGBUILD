@@ -1,7 +1,7 @@
 pkgname=gorm
 pkgdesc="Mobile-optimized Linux WiFi settings"
-pkgver=0.1.0
-pkgrel=3
+pkgver=1.0.0
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/gorm"
 license=("GPL3")
@@ -11,7 +11,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "3171d8b37c0243451c4d8c7ba65536dafca1238d4ad0293fc50daec2bb1a5334"
+    "47c21fcd28cb7c36b5eca4459c5e74a9e65eed13a8db6ba7302e77a64e7a5447"
 )
 
 prepare() {
