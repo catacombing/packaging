@@ -1,7 +1,7 @@
 pkgname=gorm
 pkgdesc="Mobile-optimized Linux WiFi settings"
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/gorm"
 license=("GPL3")
@@ -35,7 +35,7 @@ check() {
 package() {
   cd "$pkgname"
   desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "gorm.desktop"
-  install -D -m 644 "$pkgname/10-gorm.rules" "$pkgdir/usr/share/polkit-1/rules.d/10-gorm.rules"
+  install -D -m 644 "10-gorm.rules" "$pkgdir/usr/share/polkit-1/rules.d/10-gorm.rules"
   install -D -m 755 "./target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
   install -D -m 644 "logo.svg" "$pkgdir/usr/share/pixmaps/Gorm.svg"
 }
