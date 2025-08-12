@@ -1,6 +1,6 @@
 pkgname=catacomb
 pkgdesc="A Wayland Mobile Compositor"
-pkgver=1.0.2
+pkgver=1.0.3
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
@@ -11,7 +11,7 @@ source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("a88a9440cf34e3b68a5627d5722a0410bb928507a48cafe8221f9b39afa0982c")
+sha256sums=("a93a392cb374d331313e71c95d862cbf9948db56b493a3afb439815d4223a205")
 replaces=("catacomb-git")
 
 prepare() {
