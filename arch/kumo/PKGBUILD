@@ -1,6 +1,6 @@
 pkgname=kumo
 pkgdesc="A Wayland Mobile Browser"
-pkgver=1.4.4
+pkgver=1.5.1
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/kumo"
@@ -11,7 +11,7 @@ source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("c717eafd90fc83725a22ef47e0a5a543fa5b0265658932d5a3618d517eeac88d")
+sha256sums=("a11fdaf204f6a4a574d09c1c26466c8c6b0ccf0bab4e50a028b74a4ad8333b27")
 replaces=("kumo-git")
 
 prepare() {
