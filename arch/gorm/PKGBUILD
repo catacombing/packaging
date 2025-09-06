@@ -1,8 +1,7 @@
 pkgname=gorm
 pkgdesc="Mobile-optimized Linux WiFi settings"
-# TODO: Reenable check() once upstream is fixed.
-pkgver=1.0.1
-pkgrel=2
+pkgver=1.1.0
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/gorm"
 license=("GPL3")
@@ -12,7 +11,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "632bd681e52cab25b1185aedca9b2e3d2e613ebfaa91edd34d2a7b2d1e13e142"
+    "0b5a02bd625cc79855cf82073bd1984173e24e155e8f1740820fcd88d7aa882d"
 )
 
 prepare() {
@@ -27,11 +26,11 @@ build() {
   CARGO_INCREMENTAL=0 cargo build --release --locked --offline
 }
 
-# check() {
-#   cd "$pkgname"
+check() {
+  cd "$pkgname"
 
-#   CARGO_INCREMENTAL=0 cargo test --locked --offline
-# }
+  CARGO_INCREMENTAL=0 cargo test --locked --offline
+}
 
 package() {
   cd "$pkgname"
