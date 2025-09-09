@@ -1,0 +1,44 @@
+pkgname=aevum
+pkgdesc="Wayland mobile alarm clock"
+pkgver=2.0.0
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://github.com/catacombing/aevum"
+license=("GPL3")
+makedepends=("git" "rust" "cargo" "alsa-lib")
+source=("git+$url.git#tag=v$pkgver?signed")
+validpgpkeys=(
+    "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
+)
+sha256sums=("8deae264e8ed7dff1fce58bbfa3a8bc39f12f7396b8aec796d3c1b3040d1000a")
+replaces=("catacomb-alarm")
+
+prepare() {
+  cd "$pkgname"
+  cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+}
+
+build() {
+  cd "$pkgname"
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline --manifest-path rezz/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline --manifest-path cli/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo build --release --locked --offline
+}
+
+check() {
+  cd "$pkgname"
+  CARGO_INCREMENTAL=0 cargo test --locked --offline --manifest-path rezz/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo test --locked --offline --manifest-path cli/Cargo.toml
+  CARGO_INCREMENTAL=0 cargo test --locked --offline
+}
+
+package() {
+  cd "$pkgname"
+  desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "Aevum.desktop"
+  install -D -m644 "rezz/org.catacombing.rezz.conf" "$pkgdir/usr/share/dbus-1/system.d/org.catacombing.rezz.conf"
+  install -D -m644 "rezz/rezz.service" "$pkgdir/usr/lib/systemd/system/rezz.service"
+  install -D -m755 "target/release/rezz" "$pkgdir/usr/bin/rezz"
+  install -D -m755 "target/release/aevum" "$pkgdir/usr/bin/aevum"
+  install -D -m755 "target/release/aevum-cli" "$pkgdir/usr/bin/aevum-cli"
+  install -D -m644 "logo.svg" "$pkgdir/usr/share/pixmaps/Aevum.svg"
+}
