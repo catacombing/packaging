@@ -1,19 +1,19 @@
 pkgname=catacomb-meta
 pkgdesc="Catacomb DE meta package"
-pkgver=1.0.2
+pkgver=1.0.5
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
 makedepends=()
-depends=("catacomb" "epitaph" "squeekboard" "swayidle" "tinydm" "tremor" "tzompantli")
+depends=("catacomb" "epitaph" "squeekboard" "swayidle" "tinydm" "tremor" "tzompantli" "grim" "slurp")
 backup=("etc/catacomb/initrc")
 source=("git+$url.git#tag=v$pkgver?signed" $pkgname.install)
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "a88a9440cf34e3b68a5627d5722a0410bb928507a48cafe8221f9b39afa0982c"
+    "987969bad98baf6f34bd6e1dd573fa4ea369e14f0038f9fdc2407c9281fbafd4"
     "3b9c6971718731d3ee4cab7acbfc475b4647795d3446f30acd270f4497173b5a"
 )
 install=$pkgname.install
