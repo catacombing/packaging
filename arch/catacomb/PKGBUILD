@@ -1,18 +1,20 @@
-pkgname=catacomb
+pkgname=(catacomb catacomb-meta)
 pkgdesc="A Wayland Mobile Compositor"
 pkgver=1.0.5
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
 makedepends=("git" "rust" "cargo" "libxkbcommon" "libinput" "seatd" "wayland" "mesa")
 depends=("libxkbcommon" "libinput" "seatd")
-source=("git+$url.git#tag=v$pkgver?signed")
+source=("git+$url.git#tag=v$pkgver?signed" "catacomb-meta.install")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("987969bad98baf6f34bd6e1dd573fa4ea369e14f0038f9fdc2407c9281fbafd4")
-replaces=("catacomb-git")
+sha256sums=(
+    "987969bad98baf6f34bd6e1dd573fa4ea369e14f0038f9fdc2407c9281fbafd4"
+    "3b9c6971718731d3ee4cab7acbfc475b4647795d3446f30acd270f4497173b5a"
+)
 
 prepare() {
   cd "$pkgname"
@@ -29,9 +31,18 @@ check() {
   CARGO_INCREMENTAL=0 cargo test --locked --offline
 }
 
-package() {
+package_catacomb() {
   cd "$pkgname"
   install -D -m755 {target/release/$pkgname,session/$pkgname-session} -t $pkgdir/usr/bin/
   install -D -m644 session/$pkgname{.service,-shutdown.target} -t $pkgdir/usr/lib/systemd/user/
   install -D -m644 session/$pkgname.desktop -t $pkgdir/usr/share/wayland-sessions/
+}
+
+package_catacomb-meta() {
+  depends=("catacomb" "epitaph" "squeekboard" "swayidle" "tinydm" "tremor" "tzompantli" "grim" "slurp")
+  backup=("etc/catacomb/initrc")
+  install=$pkgname.install
+
+  cd "catacomb"
+  install -Dm755 "initrc" "$pkgdir/etc/catacomb/initrc"
 }
