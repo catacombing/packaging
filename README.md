@@ -24,3 +24,10 @@ pacman-key --lsign-key 733163AA31950B7F4BE7EC4082CE6C29C7797E04
 
 If you want to try Catacomb on a PinePhone or PinePhone Pro, you can download a
 prebuilt image from https://catacombing.org.
+
+## Catacomb Installation
+
+After setting up the Catacomb repository, you can install `catacomb-meta` to
+install all Catacomb packages, or pick the ones you would like installed. The
+meta package will enable the `tinydm` service using the `catacomb.desktop`
+session, to automatically login and start Catacomb after boot.
