@@ -1,6 +1,6 @@
 pkgname=tabula
 pkgdesc="Wayland Wallpaper Tool"
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/tabula"
@@ -10,7 +10,7 @@ source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("1b87f12ce7c4e2c9b056b60d2f9e755459e1c8e725e8f09857349b256fdf8b0d")
+sha256sums=("7e734e75fd5dd1ca23d6caa00954dbf7d762c45daa13235e2066e104ca52343c")
 replaces=("tabula-git")
 
 prepare() {
