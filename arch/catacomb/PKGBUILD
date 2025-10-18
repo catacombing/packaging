@@ -1,7 +1,7 @@
 pkgname=(catacomb catacomb-meta)
 pkgdesc="A Wayland Mobile Compositor"
-pkgver=1.0.5
-pkgrel=2
+pkgver=1.0.6
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
@@ -12,7 +12,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "987969bad98baf6f34bd6e1dd573fa4ea369e14f0038f9fdc2407c9281fbafd4"
+    "7d6869300e33785d930822ed40735be0361b6504eeaf7631cbb362b218011071"
     "3b9c6971718731d3ee4cab7acbfc475b4647795d3446f30acd270f4497173b5a"
 )
 
