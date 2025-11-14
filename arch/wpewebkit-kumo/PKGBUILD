@@ -4,7 +4,7 @@ pkgname=(
   wpewebkit-kumo-docs
 )
 pkgver=2.50.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Embeddable web content engine"
 url="https://github.com/chrisduerr/webkit"
 arch=(x86_64 aarch64)
