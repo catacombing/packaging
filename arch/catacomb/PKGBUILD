@@ -1,7 +1,7 @@
 pkgname=(catacomb catacomb-meta)
 pkgdesc="A Wayland Mobile Compositor"
 pkgver=1.0.6
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
@@ -40,6 +40,15 @@ package_catacomb() {
 
 package_catacomb-meta() {
   depends=("catacomb" "epitaph" "squeekboard" "swayidle" "tinydm" "tremor" "tzompantli" "grim" "slurp")
+  optdepends=(
+      "alacritty: terminal emulator"
+      "kumo: web browser"
+      "gorm: WiFi GUI"
+      "aevum: alarm clock"
+      "charon: maps & navigation"
+      "pinax: notepad"
+      "tabula: wallpaper"
+  )
   backup=("etc/catacomb/initrc")
   install=$pkgname.install
 
