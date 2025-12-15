@@ -3,7 +3,7 @@ pkgname=(
   wpewebkit-kumo
   wpewebkit-kumo-docs
 )
-pkgver=2.50.1
+pkgver=2.50.3
 pkgrel=2
 pkgdesc="Embeddable web content engine"
 url="https://github.com/chrisduerr/webkit"
@@ -101,7 +101,7 @@ source=(
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("d4bf93976a5b414041f99b6ec559442748782e44603aaddb57aeab2eb818904a")
+sha256sums=("2f119e5be4fb1a02f23138891ffb61b17b83b3c8d5a4b01d00a9e10419be435c")
 
 build() {
   local cmake_options=(
