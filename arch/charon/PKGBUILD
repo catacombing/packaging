@@ -7,14 +7,36 @@ url="https://github.com/catacombing/charon"
 license=("GPL3")
 makedepends=("git" "rust" "cargo" "boost")
 depends=("kyotocabinet" "marisa" "sqlite3")
-source=("git+$url.git#tag=v$pkgver?signed")
+source=(
+    "git+$url.git#tag=v$pkgver?signed"
+    "git+https://github.com/chrisduerr/geocoder-nlp.git#commit=56cbd6692a70855909580ab3166bfa23df41aa54"
+    "git+https://github.com/openvenues/libpostal.git#commit=25099c506612b34b23b1bfe286ca6321fcf06f35"
+    "git+https://github.com/rinigus/sqlite3pp.git#commit=5cf99ae80873d78b2c52296f51fda2f0d8b11e0d"
+)
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("112fc58e559094a0fbbddd88caf46254e31f2164e9d47f9cac9f08a2c1523009")
+sha256sums=(
+    "112fc58e559094a0fbbddd88caf46254e31f2164e9d47f9cac9f08a2c1523009"
+    "958820d901049f38277d96fcef92aa61ebc0fd9061f5002ee8b1060eb02fab64"
+    "1f6b0dc07d0d9ff8ab5e47f46f5179fd4d81633c6f70c964c415029c903cd9c4"
+    "e659b085ed2b30068be938ea446693504c7476101f1f0eec85d4870eab189b4f"
+)
+options=(!lto)
 
 prepare() {
   cd "$pkgname"
+
+  git submodule init
+  git config submodule.geocoder_nlp_rs/geocoder-nlp.url "$srcdir/geocoder-nlp"
+  git config submodule.geocoder_nlp_rs/libpostal.url "$srcdir/libpostal"
+  git -c protocol.file.allow=always submodule update
+
+  cd "geocoder_nlp_rs/geocoder-nlp"
+  git config submodule.thirdparty/sqlite3pp.url "$srcdir/sqlite3pp"
+  git -c protocol.file.allow=always submodule update
+
+  cd "../.."
 
   cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
