@@ -1,6 +1,6 @@
 pkgname=tzompantli
 pkgdesc="A Wayland mobile application drawer"
-pkgver=1.3.0
+pkgver=1.3.1
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/tzompantli"
@@ -11,7 +11,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "ad2fa62afee2b59a7fcb7b78693854c20c9de3e6e7693f1c0426e599802129e9"
+    "ef73c8cd35dc66cdd009ac5c2f87b5b6f17a1d03906d0499b379dc88dc7c2bda"
     "8bcbc0941d3a6e458a3b1eb2e8443dee7bdb5c7e040ebcc90d46cd22eb6108bb"
 )
 replaces=("tzompantli-git")
