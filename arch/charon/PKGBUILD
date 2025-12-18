@@ -1,16 +1,17 @@
 pkgname=charon
 pkgdesc="Wayland Mobile Maps & Navigation"
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/charon"
 license=("GPL3")
-makedepends=("git" "rust" "cargo")
+makedepends=("git" "rust" "cargo" "boost")
+depends=("kyotocabinet" "marisa" "sqlite3")
 source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("eae7f3ea91c91c407b5d894edaf79d54f938dcf2204f5a2bb81777e79302fab4")
+sha256sums=("112fc58e559094a0fbbddd88caf46254e31f2164e9d47f9cac9f08a2c1523009")
 
 prepare() {
   cd "$pkgname"
