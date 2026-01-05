@@ -1,6 +1,6 @@
 pkgname=tremor
 pkgdesc="Force-feedback device control utility"
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/tremor"
@@ -10,7 +10,7 @@ source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("b1a70b87102fc2775c46b045f7b430f24c50febb4d47afd132c7b2108c55a42a")
+sha256sums=("2ef0770a9652c5e73dc551e73f1c79f725940d0151dbd276b520237b0389e9bc")
 replaces=("tremor-git")
 
 prepare() {
