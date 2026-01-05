@@ -1,12 +1,12 @@
 pkgname=charon
 pkgdesc="Wayland Mobile Maps & Navigation"
-pkgver=1.0.0
+pkgver=1.1.0
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/charon"
 license=("GPL3")
 makedepends=("git" "rust" "cargo" "boost")
-depends=("kyotocabinet" "marisa" "sqlite3")
+depends=("kyotocabinet" "marisa" "sqlite3" "protobuf")
 source=(
     "git+$url.git#tag=v$pkgver?signed"
     "git+https://github.com/chrisduerr/geocoder-nlp.git#commit=56cbd6692a70855909580ab3166bfa23df41aa54"
@@ -17,7 +17,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "2c80461d790988b5ce6083deebfe8a3277914060f2d1f38e86030486bb4ef2a7"
+    "4d39ef4531aa2d0563bedcfff919b182dc75466dfa2d0ba74c6b8f5d3e1fd986"
     "958820d901049f38277d96fcef92aa61ebc0fd9061f5002ee8b1060eb02fab64"
     "1f6b0dc07d0d9ff8ab5e47f46f5179fd4d81633c6f70c964c415029c903cd9c4"
     "e659b085ed2b30068be938ea446693504c7476101f1f0eec85d4870eab189b4f"
