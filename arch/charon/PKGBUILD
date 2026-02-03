@@ -1,7 +1,7 @@
 pkgname=charon
 pkgdesc="Wayland Mobile Maps & Navigation"
 pkgver=1.4.0
-pkgrel=2
+pkgrel=3
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/charon"
 license=("GPL3")
@@ -57,7 +57,7 @@ package() {
   cd "$pkgname"
   desktop-file-install -m 644 --dir "$pkgdir/usr/share/applications/" "charon.desktop"
   mkdir -p -m 750 "$pkgdir/usr/share/polkit-1/rules.d"
-  install -D -m 644 "$pkgname/rules/66-charon.rules.polkit" "$pkgdir/usr/share/polkit-1/rules.d/66-charon.rules"
+  install -D -m 644 "./rules/66-charon.rules.polkit" "$pkgdir/usr/share/polkit-1/rules.d/66-charon.rules"
   install -D -m755 "./target/release/$pkgname" "$pkgdir/usr/bin/$pkgname"
   install -D -m644 "logo.svg" "$pkgdir/usr/share/pixmaps/Charon.svg"
 }
