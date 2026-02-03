@@ -1,0 +1,26 @@
+_mode=host
+_crossdirect=false
+pkgname=pd-mapper
+pkgdesc="Qualcomm Protection Domain mapper"
+pkgver=1.1
+pkgrel=1
+_arches=specific
+arch=(aarch64)
+license=(BSD-3-Clause)
+url="https://github.com/linux-msm/$pkgname"
+depends=(qrtr)
+source=("git+$url#tag=v$pkgver")
+sha256sums=("9708a2af089e79c886be2268441bfda9d732d7e587bf9ae7847e4ea80b113f02")
+
+build() {
+    cd "$pkgname"
+
+    make prefix=/usr
+}
+
+package() {
+    cd "$pkgname"
+
+    make prefix=/usr DESTDIR="$pkgdir/" install
+    install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/COPYING
+}

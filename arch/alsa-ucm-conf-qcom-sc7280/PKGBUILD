@@ -1,0 +1,25 @@
+pkgname=alsa-ucm-conf-qcom-sc7280
+pkgdesc="ALSA UCM configuration for SC7280 devices"
+pkgver=r921.1f98b6a
+pkgrel=3
+arch=("aarch64")
+url="https://github.com/sc7280-mainline/alsa-ucm-conf"
+license=("BSD-3-Clause")
+provides=("alsa-ucm-conf")
+conflicts=("alsa-ucm-conf")
+_commit=1f98b6ab40c19cd7f232c76637417c1d1955b86f
+source=("git+$url.git#commit=$_commit")
+sha256sums=("57341686c62a9b44851181e1beec4901470c739d23935658cc928d185bf1675a")
+
+pkgver() {
+    cd "alsa-ucm-conf"
+
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+    cd "alsa-ucm-conf"
+
+    mkdir -p "$pkgdir/usr/share/alsa"
+    cp -r ucm2 "$pkgdir/usr/share/alsa/"
+}

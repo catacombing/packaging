@@ -1,0 +1,30 @@
+_mode=host
+_crossdirect=false
+pkgname="qrtr"
+pkgdesc="Userspace reference for net/qrtr in the Linux kernel"
+pkgver=1.2
+pkgrel=1
+_arches=specific
+arch=(aarch64)
+license=(BSD-3-Clause)
+url="https://github.com/linux-msm/$pkgname"
+depends=(glibc)
+makedepends=(
+    git
+    meson
+    gcc
+    linux-headers
+)
+source=("git+$url#tag=v$pkgver")
+sha256sums=("2ba92d8e092365c69d12a6a4f225831b296357078219ac94999a698c6e140f2b")
+
+build() {
+    arch-meson $pkgname build
+    meson compile -C build
+}
+
+package() {
+    meson install -C build --destdir "$pkgdir"
+
+    install -Dm644 "$pkgname"/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/COPYING
+}

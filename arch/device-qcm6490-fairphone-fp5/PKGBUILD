@@ -1,0 +1,30 @@
+_mode=cross
+_nodeps=true
+pkgname=device-qcm6490-fairphone-fp5
+pkgdesc="Fairphone 5"
+pkgver=1
+pkgrel=2
+arch=("aarch64")
+source=(
+    "81-libssc-fairphone-fp5.rules"
+    "52-fairphone-fp5.conf"
+)
+sha256sums=(
+    "36e8732282f447fda1cf93f794a439c71be78b1c9b49d7078bb13584c9fea31e"
+    "8d695a2a89118c51eee7d7c2c0c1a544daf3a00dfcca75f94a2d1d7fe32173e2"
+)
+
+package() {
+    depends=(
+        "linux-sc7280"
+        "linux-firmware-fairphone-fp5"
+        "linux-firmware-atheros"
+        "linux-firmware-qcom"
+        "alsa-ucm-conf-qcom-sc7280"
+        "hexagonrpcd"
+        "pd-mapper"
+    )
+
+    install -Dm644 "81-libssc-fairphone-fp5.rules" -t "$pkgdir/usr/lib/udev/rules.d"
+    install -Dm644 "52-fairphone-fp5.conf" -t "$pkgdir/usr/share/wireplumber/wireplumber.conf.d"
+}

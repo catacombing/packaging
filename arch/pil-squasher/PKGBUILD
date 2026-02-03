@@ -1,0 +1,28 @@
+pkgname=pil-squasher
+pkgdesc="Convert split mdt + bXX files into a single mbn file"
+pkgver=r13.3c9f8b8
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://github.com/andersson/pil-squasher"
+license=("BSD-3-Clause")
+_commit=3c9f8b8756ba6e4dbf9958570fd4c9aea7a70cf4
+source=("git+$url.git#commit=$_commit")
+sha256sums=("2cb7f05e67812611fb82136786f25081d2e23029a750454b5f1cc717b6f691f4")
+
+pkgver() {
+    cd "$pkgname"
+
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd "$pkgname"
+
+    make
+}
+
+package() {
+    cd "$pkgname"
+
+    make prefix=/usr DESTDIR="$pkgdir" install
+}

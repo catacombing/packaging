@@ -1,0 +1,74 @@
+pkgname=linux-firmware-fairphone-fp5
+pkgdesc="Firmware files for Linux - Firmware for the Fairphone 5"
+pkgver=1.0.0
+pkgrel=4
+arch=("aarch64")
+options=(!strip)
+url="https://github.com/FairBlobs/FP5-firmware"
+license=("custom:Proprietary")
+makedepends=("pil-squasher")
+_commit="a4908f548e6f88965e78b1478af1751b6a854fc9"
+source=("git+$url.git#commit=$_commit")
+sha256sums=("d8f72b9a0afdf45f3907c95344293fa2fdfcf21af496b878278afa3949ea22b1")
+_fwdir="/usr/lib/firmware/qcom/qcm6490/fairphone5"
+# XXX: The HexagonFS directory is intentionally different, to allow hexagonrpcd
+# to automatically find its files.
+_hexagon_dir="/usr/lib/firmware/qcom/qcm6490/Fairphone/fp5"
+
+build() {
+    cd "FP5-firmware"
+
+    for i in *.mdt; do
+        pil-squasher "$(basename "$i" .mdt)".mbn "$i"
+    done
+}
+
+package() {
+    cd "FP5-firmware"
+
+    # Adreno GPU
+    install -Dm644 a660_zap.mbn -t "$pkgdir/$_fwdir"
+
+    # ADSP
+    install -Dm644 adsp.mbn -t "$pkgdir/$_fwdir"
+    install -Dm644 adsp*.jsn -t "$pkgdir/$_fwdir"
+    install -Dm644 battmgr.jsn -t "$pkgdir/$_fwdir"
+
+    # Audio
+    install -Dm644 aw882xx_acf.bin "$pkgdir/$_fwdir/aw88261_acf.bin"
+
+    # These are ignored for now, since they're already part of
+    # linux-firmware-atheros (though potentially different)
+    #
+    # Bluetooth
+    #install -Dm644 msbtfw11.mbn -t "$pkgdir/usr/lib/firmware/qca"
+    #install -Dm644 msnv11.bin -t "$pkgdir/usr/lib/firmware/qca"
+
+    # CDSP
+    install -Dm644 cdsp.mbn -t "$pkgdir/$_fwdir"
+    install -Dm644 cdsp*.jsn -t "$pkgdir/$_fwdir"
+
+    # HexagonFS
+    mkdir -p $(dirname "$pkgdir/$_hexagon_dir")
+    cp -r hexagonfs "$pkgdir/$_hexagon_dir"
+    find "$pkgdir/$_hexagon_dir" -type f -exec chmod 0644 {} +
+
+    # Remove currently unused files.
+    rm -rf "$pkgdir/$_hexagon_dir/acdb/"
+    rm -rf "$pkgdir/$_hexagon_dir/dsp/"
+
+    # IPA
+    install -Dm644 yupik_ipa_fws.mbn "$pkgdir/$_fwdir/ipa_fws.mbn"
+
+    # Modem
+    install -Dm644 modem.mbn -t "$pkgdir/$_fwdir"
+    install -Dm644 modem*.jsn -t "$pkgdir/$_fwdir"
+    cp -r modem_pr "$pkgdir/$_fwdir"
+    find "$pkgdir/$_fwdir/modem_pr" -type f -exec chmod 0644 {} +
+
+    # Venus
+    install -Dm644 vpu20_1v.mbn "$pkgdir/$_fwdir/venus.mbn"
+
+    # WPSS
+    install -Dm644 wpss.mbn -t "$pkgdir/$_fwdir"
+}
