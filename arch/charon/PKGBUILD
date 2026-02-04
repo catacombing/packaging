@@ -1,12 +1,16 @@
 pkgname=charon
 pkgdesc="Wayland Mobile Maps & Navigation"
 pkgver=1.4.0
-pkgrel=3
+pkgrel=4
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/charon"
 license=("GPL3")
 makedepends=("git" "rust" "cargo" "boost")
 depends=("kyotocabinet" "marisa" "sqlite3" "protobuf")
+optdepends=(
+    "modemmanager: GPS location"
+    "dbus: GPS location"
+)
 source=(
     "git+$url.git#tag=v$pkgver?signed"
     "git+https://github.com/chrisduerr/geocoder-nlp.git#commit=56cbd6692a70855909580ab3166bfa23df41aa54"

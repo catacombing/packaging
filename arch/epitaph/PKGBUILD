@@ -1,11 +1,17 @@
 pkgname=epitaph
 pkgdesc="A Wayland mobile panel"
 pkgver=1.1.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/epitaph"
 license=("GPL3")
 makedepends=("git" "rust" "cargo")
+optdepends=(
+    "networkmanager: WiFi connection status"
+    "modemmanager: GPS/Cellular connection status"
+    "pulse-native-provider: Audio volume"
+    "dbus: Network/ModemManager communication"
+)
 source=("git+$url.git#tag=v$pkgver?signed" "sysuser.conf")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
