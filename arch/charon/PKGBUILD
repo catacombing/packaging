@@ -1,7 +1,7 @@
 pkgname=charon
 pkgdesc="Wayland Mobile Maps & Navigation"
 pkgver=1.5.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/charon"
 license=("GPL3")
@@ -21,7 +21,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "e72c23fcaa534e608cb5cfd4f45b53264c2b9ef4ebc507f2ff3aa9546c523213"
+    "585d3d3d3a7b04713401bced62d68afb1d85d07437ce6a49e3267b66c3196607"
     "958820d901049f38277d96fcef92aa61ebc0fd9061f5002ee8b1060eb02fab64"
     "1f6b0dc07d0d9ff8ab5e47f46f5179fd4d81633c6f70c964c415029c903cd9c4"
     "e659b085ed2b30068be938ea446693504c7476101f1f0eec85d4870eab189b4f"
