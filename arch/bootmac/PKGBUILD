@@ -3,7 +3,7 @@ _nodeps=true
 pkgname=bootmac
 pkgdesc="Configure MAC addresses at boot"
 pkgver=0.7.1
-pkgrel=1
+pkgrel=2
 _arches=specific
 arch=(aarch64)
 license=(GPL-3.0-or-later)
@@ -14,14 +14,17 @@ depends=(
 )
 source=(
     "git+https://gitlab.postmarketos.org/postmarketOS/bootmac.git#tag=v$pkgver"
+    "bootmac-bluetooth.rules"
+    "bootmac-wifi.rules"
 )
-sha256sums=('c77c1d0d1039e86907866f305215a9b96c7cc7a16cb7ee900de18cd877ea2dac')
+sha256sums=(
+    "c77c1d0d1039e86907866f305215a9b96c7cc7a16cb7ee900de18cd877ea2dac"
+    "617ce345d081b3cedf9d5c9a8740952e5574bdaa980506b73e67848b15208846"
+    "845ce0e7128e2b487c852e54010d4912fdf18b9bf3e8ba0b330f9ea72f08b187"
+)
 
 package() {
-    cd "$pkgname"
-
     install -Dm644 "bootmac-bluetooth.rules" "$pkgdir/usr/lib/udev/rules.d/90-bootmac-bluetooth.rules"
     install -Dm644 "bootmac-wifi.rules" "$pkgdir/usr/lib/udev/rules.d/90-bootmac-wifi.rules"
-    install -Dm644 "systemd/bootmac@.service" -t "$pkgdir/usr/lib/systemd/system/"
-    install -Dm755 bootmac "$pkgdir"/usr/bin/bootmac
+    install -Dm755 "$pkgname/bootmac" "$pkgdir/usr/bin/bootmac"
 }

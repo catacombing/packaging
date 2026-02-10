@@ -1,0 +1,7 @@
+#
+# Configure the MAC addresses of the Bluetooth interfaces when they appear.
+# Copyright (c) Dylan Van Assche (2022)
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+ACTION=="add", SUBSYSTEM=="bluetooth", KERNEL=="hci0", RUN+="/usr/bin/bootmac --bluetooth"

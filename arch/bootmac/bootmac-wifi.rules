@@ -1,0 +1,7 @@
+#
+# Configure the MAC addresses of the WLAN interfaces when they appear.
+# Copyright (c) Dylan Van Assche (2022)
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+ACTION=="add", SUBSYSTEM=="net", KERNEL=="wlan0", RUN+="/usr/bin/bootmac --wlan"
