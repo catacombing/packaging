@@ -4,7 +4,7 @@ pkgbase="linux-$_kernelname"
 _desc="Qualcomm SC7280/SM7325/QCM6490 kernel"
 _srcname=linux
 pkgver=6.18.7
-pkgrel=5
+pkgrel=6
 _arches=specific
 arch=(aarch64)
 license=("GPL2")
@@ -30,7 +30,7 @@ source=(
 )
 sha256sums=(
     "fa053701c865f5e0aeb4dc5ccde22e5938a053d87d445dcf112330d8ad1af59f"
-    "fd817cdb42d6d561e3775052e1b485c07f34b8af02360825c7321b23959e1dac"
+    "dcc3d1681c7c92d8481725fdad31207219659c786ef814e5681f415c05d668a1"
     "9a123cf004fe6b0f5fa8b423ecf413c6b6b352e28a14e7a999d21fc26b9c0ea9"
     "e71754139fbbc5636a2f9153a2232856c9c1ccfa3f9b07545eea3c211be78715"
     "ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21"
