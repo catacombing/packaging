@@ -3,7 +3,7 @@ _nodeps=true
 pkgname=device-qcm6490-fairphone-fp5
 pkgdesc="Fairphone 5"
 pkgver=1
-pkgrel=2
+pkgrel=3
 arch=("aarch64")
 source=(
     "81-libssc-fairphone-fp5.rules"
@@ -23,6 +23,7 @@ package() {
         "alsa-ucm-conf-qcom-sc7280"
         "hexagonrpcd"
         "pd-mapper"
+        "bootmac"
     )
 
     install -Dm644 "81-libssc-fairphone-fp5.rules" -t "$pkgdir/usr/lib/udev/rules.d"
