@@ -1,0 +1,27 @@
+_mode=cross
+_nodeps=true
+pkgname=bootmac
+pkgdesc="Configure MAC addresses at boot"
+pkgver=0.7.1
+pkgrel=1
+_arches=specific
+arch=(aarch64)
+license=(GPL-3.0-or-later)
+url=https://gitlab.postmarketos.org/postmarketOS/bootmac
+depends=(
+    bluez-utils
+    bluez-deprecated-tools
+)
+source=(
+    "git+https://gitlab.postmarketos.org/postmarketOS/bootmac.git#tag=v$pkgver"
+)
+sha256sums=('c77c1d0d1039e86907866f305215a9b96c7cc7a16cb7ee900de18cd877ea2dac')
+
+package() {
+    cd "$pkgname"
+
+    install -Dm644 "bootmac-bluetooth.rules" "$pkgdir/usr/lib/udev/rules.d/90-bootmac-bluetooth.rules"
+    install -Dm644 "bootmac-wifi.rules" "$pkgdir/usr/lib/udev/rules.d/90-bootmac-wifi.rules"
+    install -Dm644 "systemd/bootmac@.service" -t "$pkgdir/usr/lib/systemd/system/"
+    install -Dm755 bootmac "$pkgdir"/usr/bin/bootmac
+}
