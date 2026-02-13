@@ -4,7 +4,7 @@ _crossdirect=false
 pkgname="hexagonrpcd"
 pkgdesc="Qualcomm HexagonFS daemon"
 pkgver=0.4.0
-pkgrel=1
+pkgrel=2
 arch=(
     "x86_64"
     "armv7h"
@@ -24,9 +24,9 @@ source=(
 sha256sums=(
     "c66a674501110e99a0f4b5c4be16805d4236347f888660c49b902cae004668b3"
     "41dfc4e8c4fd88f461a5a6e4a4e86849eb302f8bcb2b5ce2efa9690f5415d52d"
-    "c89cb83fc7fecb232f530bcd60a3dd2d6846426f7c90173a1e078c6e15dc0bc0"
-    "c69215694bedbc366fb9aebc8c6c08f27bb612753626f1083b4d30fcefd2fa04"
-    "132aff498f306dd1951ae00aaae20b3b8df57d0c6bc92cb579de0e127cac73c4"
+    "af319f41219fa008c37623113ce9ad256bfa218fcec6ff77ddc704b591c95a99"
+    "6fb0c7503f18b3a58027cb0dbb40e163be9cee7168e81622763cac8c8ad95494"
+    "4cc2248b2491fa59a967a0a3d637bed8a386ae696322c3d5ae455fdf0559fa75"
 )
 
 build() {
