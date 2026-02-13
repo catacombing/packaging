@@ -1,7 +1,7 @@
 pkgname=linux-firmware-fairphone-fp5
 pkgdesc="Firmware files for Linux - Firmware for the Fairphone 5"
 pkgver=1.0.0
-pkgrel=4
+pkgrel=5
 arch=("aarch64")
 options=(!strip)
 url="https://github.com/FairBlobs/FP5-firmware"
@@ -13,7 +13,7 @@ sha256sums=("d8f72b9a0afdf45f3907c95344293fa2fdfcf21af496b878278afa3949ea22b1")
 _fwdir="/usr/lib/firmware/qcom/qcm6490/fairphone5"
 # XXX: The HexagonFS directory is intentionally different, to allow hexagonrpcd
 # to automatically find its files.
-_hexagon_dir="/usr/lib/firmware/qcom/qcm6490/Fairphone/fp5"
+_hexagon_dir="/usr/share/qcom/qcm6490/Fairphone/fp5"
 
 build() {
     cd "FP5-firmware"
