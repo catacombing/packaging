@@ -3,7 +3,7 @@ _nodeps=true
 pkgname=device-qcm6490-fairphone-fp5
 pkgdesc="Fairphone 5"
 pkgver=1
-pkgrel=3
+pkgrel=4
 arch=("aarch64")
 source=(
     "81-libssc-fairphone-fp5.rules"
@@ -16,14 +16,13 @@ sha256sums=(
 
 package() {
     depends=(
-        "linux-sc7280"
-        "linux-firmware-fairphone-fp5"
-        "linux-firmware-atheros"
-        "linux-firmware-qcom"
         "alsa-ucm-conf-qcom-sc7280"
         "hexagonrpcd"
-        "pd-mapper"
-        "bootmac"
+        "linux-firmware-atheros"
+        "linux-firmware-fairphone-fp5"
+        "linux-firmware-qcom"
+        "linux-sc7280"
+        "soc-qcom"
     )
 
     install -Dm644 "81-libssc-fairphone-fp5.rules" -t "$pkgdir/usr/lib/udev/rules.d"
