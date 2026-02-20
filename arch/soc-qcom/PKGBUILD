@@ -1,0 +1,20 @@
+pkgname=soc-qcom
+pkgdesc="Common package for Qualcomm devices"
+pkgver=1
+pkgrel=1
+arch=("aarch64")
+license=("BSD-3-Clause")
+depends=("bootmac" "msm-modem" "swclock-offset" "tqftpserv" "pd-mapper")
+source=(
+    "51-qcom.conf"
+    "modem-gnss.service"
+)
+sha256sums=(
+    "10cd88f61c136272b915ea41e11048e6df2c20543fbaa37902e4f019ea738c1d"
+    "c336ad7aa5531fe0525ddc443c58f792932a362d0445fb3980321d9a68a7f768"
+)
+
+package() {
+    install -D -m 644 "51-qcom.conf" -t "$pkgdir/usr/share/wireplumber/wireplumber.conf.d"
+    install -D -m 644 "modem-gnss.service" -t "$pkgdir/usr/lib/systemd/system"
+}
