@@ -1,0 +1,11 @@
+diff --git a/rmtfs.service.in b/rmtfs.service.in
+index 2dc08df..2df71b6 100644
+--- a/rmtfs.service.in
++++ b/rmtfs.service.in
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=Qualcomm remotefs service
++Before=msm-modem-uim-selection.service
+ Before=NetworkManager.service
+ 
+ [Service]

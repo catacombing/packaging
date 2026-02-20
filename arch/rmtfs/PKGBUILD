@@ -1,0 +1,38 @@
+pkgname=rmtfs
+pkgdesc="Qualcomm Remote Filesystem Service Implementation"
+pkgver=1.2
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://github.com/linux-msm/rmtfs"
+license=("BSD-3-Clause")
+makedepends=("qrtr")
+source=(
+    "git+$url.git#tag=v$pkgver"
+    "msm-modem-service.patch"
+    "udev.rules"
+)
+sha256sums=(
+    "4f652d9b3cd86be922150ee789f0176ce84f4d1b4afeeb6a20f5ec0c5a4ec0a3"
+    "b97eae5cdf95649e447021fce8e9eb7171e18e867b667bd2419036cc7217c7ff"
+    "0c2f26d40d9d18e3089c6d836b64231c4f7e0c1ca41686fe7c9d1eb495dc6bbe"
+)
+
+prepare() {
+    cd "$pkgname"
+
+    patch -Np1 < "../msm-modem-service.patch"
+}
+
+build() {
+  cd "$pkgname"
+
+  make rmtfs
+}
+
+package() {
+  cd "$pkgname"
+
+  DESTDIR="$pkgdir" make prefix=/usr install
+
+  install -D -m 644 "../udev.rules" "$pkgdir/usr/lib/udev/rules.d/65-rmtfs.rules"
+}
