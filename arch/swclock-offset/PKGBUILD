@@ -1,7 +1,7 @@
 pkgname=swclock-offset
 pkgdesc="Keep system time at an offset to a non-writable RTC"
 pkgver=0.3.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://gitlab.postmarketos.org/postmarketOS/swclock-offset"
 license=("GPL-3.0-or-later")
@@ -12,5 +12,5 @@ sha256sums=("5dda338cdf72fc1b166f7e2aba3f2ae20423e1512f52f8b91ea3d778a8a2dac4")
 package() {
     cd "$pkgname"
 
-    make DESTDIR="$pkgdir" install
+    make DESTDIR="$pkgdir" bin systemd
 }
