@@ -1,7 +1,7 @@
 pkgname=tqftpserv
 pkgdesc="Trivial File Transfer Protocol server over AF_QIPCRTR"
 pkgver=1.1.1
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/linux-msm/tqftpserv"
 license=("BSD-3-Clause")
@@ -10,14 +10,10 @@ source=("git+$url.git#tag=v$pkgver")
 sha256sums=("1e36e55d71fd20807a3b3b6e24480b431217b667de56d5897ae63aad35be3943")
 
 build() {
-    cd "$pkgname"
-
-    meson -Dsystemd-unit-prefix=/usr/lib/systemd/system . output
-    meson compile -C output
+    arch-meson $pkgname build
+    meson compile -C build
 }
 
 package() {
-    cd "$pkgname"
-
-    DESTDIR="$pkgdir" meson install --no-rebuild -C output
+    meson install -C build --destdir "$pkgdir"
 }
