@@ -1,0 +1,31 @@
+pkgname=81voltd
+pkgdesc="Server-side implementation of IMS Data service on QMI/QRTR"
+pkgver=1.1.0
+pkgrel=1
+arch=("x86_64" "aarch64")
+url="https://gitlab.postmarketos.org/modem/81voltd"
+license=("GPL-2.0-or-later")
+makedepends=("meson" "libqmi" "qrtr")
+depends=("modemmanager" "qrtr")
+source=(
+    "git+$url.git#tag=v$pkgver"
+    "81voltd.service"
+)
+sha256sums=(
+    "9618c5effde80135906a77ffacb9896d7898401453f2428b6099b9d0e814ce39"
+    "5440d88b9e890e64c886cc2fefdc513810714a10c0877c0e3e2d60283388731d"
+)
+
+build() {
+    cd "$pkgname"
+
+    meson output .
+    meson compile -C output
+}
+
+package() {
+    cd "$pkgname"
+
+    DESTDIR="$pkgdir" meson install --no-rebuild -C output
+    install -Dm 644 "../81voltd.service" -t "$pkgdir/usr/lib/systemd/system"
+}
