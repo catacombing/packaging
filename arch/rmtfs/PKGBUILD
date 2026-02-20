@@ -24,15 +24,15 @@ prepare() {
 }
 
 build() {
-  cd "$pkgname"
+    cd "$pkgname"
 
-  make rmtfs
+    make rmtfs
 }
 
 package() {
-  cd "$pkgname"
+    cd "$pkgname"
 
-  DESTDIR="$pkgdir" make prefix=/usr install
+    DESTDIR="$pkgdir" make prefix=/usr install
 
-  install -D -m 644 "../udev.rules" "$pkgdir/usr/lib/udev/rules.d/65-rmtfs.rules"
+    install -D -m 644 "../udev.rules" "$pkgdir/usr/lib/udev/rules.d/65-rmtfs.rules"
 }

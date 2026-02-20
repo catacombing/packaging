@@ -1,0 +1,21 @@
+pkgname=msm-modem
+pkgdesc="Common support for Qualcomm MSM modems"
+pkgver=1
+pkgrel=1
+arch=("aarch64")
+license=("GPL-3.0-or-later")
+depends=("rmtfs" "libqmi")
+source=(
+    "msm-modem-uim-selection"
+    "msm-modem-uim-selection.service"
+)
+sha256sums=(
+    "4dcc0c9bb0ba2a69daf9a45e964af329781c87472010f5a04b8ea4e3cbacfa20"
+    "26a3f355fbb9135e5660838b77d9a0170f06fa97cc844681271b3810e30bc793"
+)
+
+package() {
+    mkdir -p "$pkgdir/usr/lib/msm-modem"
+    install -D -m 755 "msm-modem-uim-selection" -t "$pkgdir/usr/lib/msm-modem"
+    install -D -m 644 "msm-modem-uim-selection.service" -t "$pkgdir/usr/lib/systemd/system/"
+}
