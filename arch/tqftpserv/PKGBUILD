@@ -1,13 +1,19 @@
 pkgname=tqftpserv
 pkgdesc="Trivial File Transfer Protocol server over AF_QIPCRTR"
 pkgver=1.1.1
-pkgrel=2
+pkgrel=3
 arch=("x86_64" "aarch64")
 url="https://github.com/linux-msm/tqftpserv"
 license=("BSD-3-Clause")
 makedepends=("meson" "zstd" "qrtr")
-source=("git+$url.git#tag=v$pkgver")
-sha256sums=("1e36e55d71fd20807a3b3b6e24480b431217b667de56d5897ae63aad35be3943")
+source=(
+    "git+$url.git#tag=v$pkgver"
+    "tqftpserv-ModemManager.override.conf"
+)
+sha256sums=(
+    "1e36e55d71fd20807a3b3b6e24480b431217b667de56d5897ae63aad35be3943"
+    "04f8e677d0f327a98a33361b669e44eab9d1e67250be4b53624a0efc0d7da2b8"
+)
 
 build() {
     arch-meson $pkgname build
@@ -16,4 +22,7 @@ build() {
 
 package() {
     meson install -C build --destdir "$pkgdir"
+
+    install -Dm 644 "tqftpserv-ModemManager.override.conf" \
+        "$pkgdir/usr/lib/systemd/system/ModemManager.service.d/tqftpserv.override.conf"
 }

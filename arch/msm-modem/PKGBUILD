@@ -1,13 +1,19 @@
 pkgname=msm-modem
 pkgdesc="Common support for Qualcomm MSM modems"
 pkgver=13
-pkgrel=1
+pkgrel=2
 arch=("aarch64")
 url="https://gitlab.postmarketos.org/postmarketOS/msm-modem"
 license=("GPL-3.0-or-later")
 depends=("rmtfs" "libqmi")
-source=("git+$url.git#tag=$pkgver")
-sha256sums=("572929280fe87abbf9efd4e72fd5910667811f29c7f16983e74047b88c40c074")
+source=(
+    "git+$url.git#tag=$pkgver"
+    "msm-modem-uim-selection-ModemManager.override.conf"
+)
+sha256sums=(
+    "572929280fe87abbf9efd4e72fd5910667811f29c7f16983e74047b88c40c074"
+    "2916c252e5b4e712da855fde1eaa5784cf513c734b516a34beea56253e48aa8f"
+)
 
 build() {
     arch-meson $pkgname build -Dopenrc=false --libexecdir /usr/lib/msm-modem
@@ -20,4 +26,7 @@ check() {
 
 package() {
     meson install -C build --destdir "$pkgdir"
+
+    install -Dm 644 "msm-modem-uim-selection-ModemManager.override.conf" \
+        "$pkgdir/usr/lib/systemd/system/ModemManager.service.d/msm-modem-uim-selection.override.conf"
 }
