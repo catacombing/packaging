@@ -1,6 +1,6 @@
 pkgname=epitaph
 pkgdesc="A Wayland mobile panel"
-pkgver=1.1.1
+pkgver=1.2.0
 pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/epitaph"
@@ -17,7 +17,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "cdbcfbf39355451a396309bb1caffcc182d3a9683532bbe012f751b4fff17845"
+    "471fb3b1058aa684633859165536b6062f7007c34477302666a036a44f87c8b5"
     "8bcbc0941d3a6e458a3b1eb2e8443dee7bdb5c7e040ebcc90d46cd22eb6108bb"
 )
 replaces=("epitaph-git")
