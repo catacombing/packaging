@@ -1,7 +1,7 @@
 pkgname=(catacomb catacomb-meta)
 pkgdesc="A Wayland Mobile Compositor"
 pkgver=1.3.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
@@ -33,9 +33,14 @@ check() {
 
 package_catacomb() {
   cd "$pkgname"
-  install -D -m755 {target/release/$pkgname,session/$pkgname-session} -t $pkgdir/usr/bin/
-  install -D -m644 session/$pkgname{.service,-shutdown.target} -t $pkgdir/usr/lib/systemd/user/
-  install -D -m644 session/$pkgname.desktop -t $pkgdir/usr/share/wayland-sessions/
+
+  mkdir -p -m 750 "$pkgdir/usr/share/polkit-1/rules.d"
+  install -D -m 644 "rules/66-catacomb.rules.polkit" \
+      "$pkgdir/usr/share/polkit-1/rules.d/66-catacomb.rules"
+
+  install -D -m 755 {target/release/$pkgname,session/$pkgname-session} -t $pkgdir/usr/bin/
+  install -D -m 644 session/$pkgname{.service,-shutdown.target} -t $pkgdir/usr/lib/systemd/user/
+  install -D -m 644 session/$pkgname.desktop -t $pkgdir/usr/share/wayland-sessions/
 }
 
 package_catacomb-meta() {
