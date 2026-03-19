@@ -1,7 +1,7 @@
 pkgname=(catacomb catacomb-meta)
 pkgdesc="A Wayland Mobile Compositor"
-pkgver=1.3.0
-pkgrel=2
+pkgver=1.4.0
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")
@@ -12,7 +12,7 @@ validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
 sha256sums=(
-    "42d805c8bb8fcefcd1f271f5e83832590f4042645cdffcf0e57540df575b3cb2"
+    "a71813878d50528cddf1f1f738e097434b1f03bb793ce7e4b1a678d5a1b503d5"
     "3b9c6971718731d3ee4cab7acbfc475b4647795d3446f30acd270f4497173b5a"
 )
 
@@ -32,6 +32,10 @@ check() {
 }
 
 package_catacomb() {
+  optdepends=(
+    "iio-sensor-proxy: Accelerometer support"
+  )
+
   cd "$pkgname"
 
   mkdir -p -m 750 "$pkgdir/usr/share/polkit-1/rules.d"
