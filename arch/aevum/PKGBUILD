@@ -1,11 +1,11 @@
 pkgname=aevum
 pkgdesc="Wayland mobile alarm clock"
 pkgver=2.3.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/aevum"
 license=("GPL3")
-makedepends=("git" "rust" "cargo" "alsa-lib")
+makedepends=("git" "rust" "cargo" "alsa-lib" "desktop-file-utils")
 depends=("dbus")
 source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(

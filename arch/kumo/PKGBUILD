@@ -1,11 +1,11 @@
 pkgname=kumo
 pkgdesc="A Wayland Mobile Browser"
 pkgver=1.6.2
-pkgrel=2
+pkgrel=3
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/kumo"
 license=("GPL3")
-makedepends=("git" "rust" "cargo" "wpewebkit-kumo")
+makedepends=("git" "rust" "cargo" "wpewebkit-kumo" "desktop-file-utils")
 depends=("wpewebkit-kumo" "gst-plugins-base" "gst-plugins-good" "gst-plugins-bad" "gst-libav" "ttf-font")
 source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(

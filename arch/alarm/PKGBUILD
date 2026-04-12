@@ -2,11 +2,11 @@ pkgname=catacomb-alarm
 _pkgname=alarm
 pkgdesc="Alarm clock client"
 pkgver=1.1.1
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/alarm"
 license=("GPL3")
-makedepends=("git" "rust" "cargo" "gtk4" "alsa-lib")
+makedepends=("git" "rust" "cargo" "gtk4" "alsa-lib" "desktop-file-utils")
 depends=("gtk4")
 source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
