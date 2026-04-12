@@ -1,12 +1,12 @@
 pkgname=charon
 pkgdesc="Wayland Mobile Maps & Navigation"
-pkgver=1.6.0
-pkgrel=2
+pkgver=1.6.1
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/charon"
 license=("GPL3")
-makedepends=("git" "rust" "cargo" "boost")
-depends=("kyotocabinet" "marisa" "sqlite3" "protobuf")
+makedepends=("git" "rust" "cargo" "boost" "cmake")
+depends=("kyotocabinet" "marisa" "sqlite3" "protobuf" "libxkbcommon")
 optdepends=(
     "modemmanager: GPS location"
     "dbus: GPS location"
