@@ -3,7 +3,7 @@ _nodeps=true
 pkgname=device-qcm6490-fairphone-fp5
 pkgdesc="Fairphone 5"
 pkgver=1
-pkgrel=5
+pkgrel=6
 arch=("aarch64")
 source=(
     "81-libssc-fairphone-fp5.rules"
@@ -11,7 +11,7 @@ source=(
 )
 sha256sums=(
     "36e8732282f447fda1cf93f794a439c71be78b1c9b49d7078bb13584c9fea31e"
-    "6d19756572e84a40615cff527ac36b01bf4293bf7ac7a3392d9fa8e17699b98d"
+    "04309e3295e74cb0aea2ed0ed32ed4f0cad2dbaf1c8ed6cc65c370cc637d4b90"
 )
 
 package() {
