@@ -1,7 +1,7 @@
 pkgname=(catacomb catacomb-meta)
 pkgdesc="A Wayland Mobile Compositor"
 pkgver=1.4.0
-pkgrel=1
+pkgrel=2
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/catacomb"
 license=("GPL3")

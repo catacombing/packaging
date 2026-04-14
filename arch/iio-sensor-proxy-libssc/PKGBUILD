@@ -1,7 +1,7 @@
 pkgname=iio-sensor-proxy-libssc
 _pkgname=iio-sensor-proxy
-pkgver=3.8
-pkgrel=1
+pkgver=3.9
+pkgrel=2
 pkgdesc='IIO accelerometer sensor to input device proxy'
 arch=('x86_64' 'aarch64')
 url='https://gitlab.freedesktop.org/hadess/iio-sensor-proxy'
@@ -13,52 +13,11 @@ provides=("$_pkgname")
 source=(
   "$url/-/archive/$pkgver/$_pkgname-$pkgver.tar.gz"
   "system-iio-sensor-proxy.service.d-hexagonrpcd.conf"
-  "0001-iio-sensor-proxy-depend-on-libssc.patch"
-  "0001-WIP-iio-sensor-proxy.c-Do-not-exit-based-on-sensor-e.patch"
-  "0002-proximity-support-SSC-proximity-sensor.patch"
-  "0003-light-support-SSC-light-sensor.patch"
-  "0004-accelerometer-support-SSC-accelerometer-sensor.patch"
-  "0005-compass-support-SSC-compass-sensor.patch"
-  "0006-data-add-libssc-udev-rules.patch"
-  "0007-data-iio-sensor-proxy.service.in-add-AF_QIPCRTR.patch"
-  "0008-drv-ssc-implement-set_polling.patch"
-  "0009-tests-integration-test-add-SSC-sensors.patch"
-  "0010-fixup-data-add-libssc-udev-rules.patch"
-  "0013-integration-test-add-test-for-sensors-that-report-no.patch"
 )
 sha512sums=(
-  '9cca8d706c531c9a2e34dfebdc8673a1765b615533e3f7776118c74cb1ce145e472203c6c7804d35701c22cc93755609829bc3817c5920d5961249d7e8de87c6'
+  'a89c842f8db2a1a36c1c7c990434bb57fd905224459170cba2ec56e79f1272acc4cac4221937704d5e9247f957d86fde716d25e2d1ccb80d88fa643b47edfda6'
   '2e8a876b61093add48e0677dcbfdac148690eddb398ff51ab4edb6547515ad8f8cfec31e8fda6886746b3bf30410b7b63c7486dcfe2441a7e742ea5023981a45'
-  'd46eeb1deabb6ee6017b86f573fcb717d8b992979bfd447e52c6dabc95d9e6c986ab937f602c2f0a731d10d87d67578aa59930d7faff69b2f42a0eab25f4c60c'
-  '4b43ea53b71c9be29367897a3c9ba349e9fdb71185300aafc00be69f923d7f27aa02bb7f0f5c5be800f0d494035992e046c010fd70a1754f8a47701b17666926'
-  '59800fbd73abd77c6cf86ab1bcdce85abefb07e3cd28d58c3e91a4b3cdd9d893a9671e8f0f3dc212064d5744a62b0b24c54fa91ce8f3ac84e361f7ba8cc64ded'
-  '7cdcd1d78629f662fa588c90e657c6abed7e43f1462c43f0d14e7756933ea927435077e193429d069b7360ba2d1c16b608226e1707858e56460c82595f054080'
-  'a956d28d55ee0e0a03bea63caf06881ead7511ac60000a5def61d482b3575006575edd6b0b30ae7874ffd9b2268fd8008a273d6ede561cc44aad46f18233d789'
-  'd4379f8e53eea02f53640752bef883870a44d0169cf821d3f5bb3245309cac1d1502a7848d5cce60d40bcdd484c9baa1f63f60d887613ad25a5ca88721d7c4c8'
-  '4651572ada878fd07ba281426b4cf4b9baf19d8464fd3af1a1c1a98765bcf358d1d445bdef53acd3bf30b1d2c8c234489e96f728d9228e3681e5038f10059573'
-  '376999144da2c5a6374de73bfaaf0eb605c5c686640f4de8cbcabbe3e78f3fce4675d5bfdc2dd60dacaa84447a039cf22cc4e5fcda478ea77a00001f052a3d85'
-  'bf0ea8a078eb168937645a661fea5b979bf1747ee0c1cd556a238c25f4f26eefd6b2f7a1da1eb0b7d66dcafe24ce31521d71e1a188a324671b08178b392206af'
-  '2a208aa064e4f3d6cb24701f65c5cdc5d35a99f61489ac0ab5f336aa8229bc1aa7571b6d7e928a3a28e53b8e35a07655ec3e8b432d7295d82606f8b1f206e7af'
-  '4f2d227efb645ce01f4ce997b2923d4a5b12a5d896c47b7e6189fd76abcae4659d5d1fb71608ce4809b19ac5a1129176c81063097826a4a19bc35ed5099537cb'
-  '9273f01d35e0f45ddc943808326d87f3a2e678ea29e607d3d70cabc9ea321db761cc170a86b3093553a4c3dfae1d81c5057d146b9a90ff490c85641f02b040df'
 )
-
-prepare() {
-  cd $_pkgname-$pkgver
-
-  patch -Np 1 < "../0001-iio-sensor-proxy-depend-on-libssc.patch"
-  patch -Np 1 < "../0001-WIP-iio-sensor-proxy.c-Do-not-exit-based-on-sensor-e.patch"
-  patch -Np 1 < "../0002-proximity-support-SSC-proximity-sensor.patch"
-  patch -Np 1 < "../0003-light-support-SSC-light-sensor.patch"
-  patch -Np 1 < "../0004-accelerometer-support-SSC-accelerometer-sensor.patch"
-  patch -Np 1 < "../0005-compass-support-SSC-compass-sensor.patch"
-  patch -Np 1 < "../0006-data-add-libssc-udev-rules.patch"
-  patch -Np 1 < "../0007-data-iio-sensor-proxy.service.in-add-AF_QIPCRTR.patch"
-  patch -Np 1 < "../0008-drv-ssc-implement-set_polling.patch"
-  patch -Np 1 < "../0009-tests-integration-test-add-SSC-sensors.patch"
-  patch -Np 1 < "../0010-fixup-data-add-libssc-udev-rules.patch"
-  patch -Np 1 < "../0013-integration-test-add-test-for-sensors-that-report-no.patch"
-}
 
 build() {
   mkdir $_pkgname-$pkgver/build
@@ -69,7 +28,7 @@ build() {
     -Dudevrulesdir=/usr/lib/udev/rules.d \
     -Dsysconfdir=/usr/share \
     -Db_lto=true \
-    -Dssc-support=true
+    -Dssc-support=enabled
 
   ninja
 }
