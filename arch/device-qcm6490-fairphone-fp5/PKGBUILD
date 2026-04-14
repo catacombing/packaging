@@ -3,15 +3,17 @@ _nodeps=true
 pkgname=device-qcm6490-fairphone-fp5
 pkgdesc="Fairphone 5"
 pkgver=1
-pkgrel=7
+pkgrel=8
 arch=("aarch64")
 source=(
     "81-libssc-fairphone-fp5.rules"
     "52-fairphone-fp5.conf"
+    "system-iio-sensor-proxy.service.d-hexagonrpcd.conf"
 )
 sha256sums=(
     "75fd00bd4a038918c803f528c077cc7545645a519b9246078345cab7203907e6"
     "04309e3295e74cb0aea2ed0ed32ed4f0cad2dbaf1c8ed6cc65c370cc637d4b90"
+    "20c318617365d8713e6d48036e7a7e0530b72245cec16c3f92f7dbc53a4209e2"
 )
 
 package() {
@@ -25,6 +27,8 @@ package() {
         "soc-qcom"
     )
 
-    install -Dm644 "81-libssc-fairphone-fp5.rules" -t "$pkgdir/usr/lib/udev/rules.d"
-    install -Dm644 "52-fairphone-fp5.conf" -t "$pkgdir/usr/share/wireplumber/wireplumber.conf.d"
+    install -Dm 644 "81-libssc-fairphone-fp5.rules" -t "$pkgdir/usr/lib/udev/rules.d"
+    install -Dm 644 "52-fairphone-fp5.conf" -t "$pkgdir/usr/share/wireplumber/wireplumber.conf.d"
+    install -Dm 644 "system-iio-sensor-proxy.service.d-hexagonrpcd.conf" \
+        "$pkgdir/usr/lib/systemd/system/iio-sensor-proxy.service.d/hexagonrpcd.conf"
 }
