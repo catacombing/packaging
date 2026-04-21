@@ -4,7 +4,7 @@ pkgname=(
   wpewebkit-kumo-docs
 )
 pkgver=2.52.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Embeddable web content engine"
 url="https://github.com/chrisduerr/webkit"
 arch=(x86_64 aarch64)
@@ -43,7 +43,6 @@ depends=(
   expat
   fontconfig
   freetype2
-  gcc-libs
   glib2
   glibc
   gst-plugins-bad-libs
@@ -51,11 +50,14 @@ depends=(
   gstreamer
   harfbuzz
   harfbuzz-icu
+  hyphen
   icu
   lcms2
+  libatomic
   libavif
   libdrm
   libepoxy
+  libgcc
   libgcrypt
   libinput
   libjpeg-turbo
@@ -63,6 +65,7 @@ depends=(
   libpng
   libseccomp
   libsoup3
+  libstdc++
   libsystemd
   libtasn1
   libwebp
