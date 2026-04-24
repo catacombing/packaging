@@ -1,0 +1,26 @@
+pkgname=qbootctl
+pkgdesc="Tool for interacting with Android A/B slots"
+pkgver=0.2.2
+pkgrel=1
+arch=("aarch64")
+url="https://github.com/linux-msm/qbootctl"
+license=("GPL-3.0-or-later")
+makedepends=("meson")
+source=(
+    "git+$url.git#tag=$pkgver"
+    "qbootctl.service"
+)
+sha256sums=(
+    "72ceae78ec89ee6a81da264d0f3ad551c35f9ee7012804e69ec2a16bc90314e4"
+    "ed6a5b41011ccc1c6890109babc2c42279c9b9f9baf7f899bb3a980a56180693"
+)
+
+build() {
+    arch-meson $pkgname build
+    meson compile -C build
+}
+
+package() {
+    meson install -C build --destdir "$pkgdir"
+    install -Dm 644 "qbootctl.service" -t "$pkgdir/usr/lib/systemd/system"
+}
