@@ -4,7 +4,7 @@ pkgname=(
   wpewebkit-kumo-docs
 )
 pkgver=2.52.3
-pkgrel=3
+pkgrel=4
 pkgdesc="Embeddable web content engine"
 url="https://github.com/chrisduerr/webkit"
 arch=(x86_64 aarch64)
@@ -38,7 +38,7 @@ license=(
 depends=(
   at-spi2-core
   atk
-  bubblewrap
+  bubblewrap-suid
   cairo
   expat
   fontconfig
