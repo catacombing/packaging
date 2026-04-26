@@ -1,7 +1,7 @@
 pkgname=aevum
 pkgdesc="Wayland mobile alarm clock"
-pkgver=2.3.0
-pkgrel=2
+pkgver=2.3.1
+pkgrel=1
 arch=("x86_64" "aarch64")
 url="https://github.com/catacombing/aevum"
 license=("GPL3")
@@ -11,7 +11,7 @@ source=("git+$url.git#tag=v$pkgver?signed")
 validpgpkeys=(
     "4DAA67A9EA8B91FCC15B699C85CDAE3C164BA7B4"  # Christian Dürr <contact@christianduerr.com>
 )
-sha256sums=("e86db07eec48a462f710ee89902d02748b94b033b71d5770f583797267b241db")
+sha256sums=("1db5e98c17a859b6fd80f0782908fed81afef201c6086708e16fa2ec9056ad28")
 replaces=("catacomb-alarm")
 
 prepare() {
